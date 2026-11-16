@@ -1,0 +1,38 @@
+# Change A (augmentation). Identical to configs/train.yaml except `run_tag` and `train.augmentation`.
+run_tag: aug                       # output folder models/fold{k}_seed{s}_aug/
+# Training settings for the ResNet-18 style classifier. See DECISIONS.md for the reasoning.
+# Paths are relative to the repository root. Data paths come from configs/preprocess.yaml.
+
+preprocess_config: configs/preprocess.yaml
+models_dir: models                 # each run writes to models/fold{k}_seed{s}_{pretrained|scratch}/
+
+model:
+  arch: resnet18
+  n_classes: 7                     # label ids 0..6 as in the manifest (alphabetical styles)
+  in_channels: 1                   # one "colour" channel: the log-mel spectrogram
+
+optim:
+  name: adamw
+  lr_pretrained: 3.0e-4
+  lr_scratch: 1.0e-3
+  weight_decay: 1.0e-4
+  schedule: cosine                 # learning rate decays along a cosine curve over max_epochs
+
+train:
+  batch_size: 32
+  max_epochs: 30
+  early_stopping_patience: 6       # stop after 6 epochs without a better validation macro-F1
+  select_metric: val_macro_f1      # the checkpoint with the best value is kept
+  mixed_precision: true            # torch.autocast float16 + GradScaler
+  channels_last: true
+  augmentation:                    # Change A: training clips only (never val / test); see src/data/augment.py
+    gain_db: 6.0                   # random offset uniform in [-6, +6] dB on real values (padding stays at the floor)
+    freq_shift_bins: 4             # shift the mel axis by -4..+4 bins (small pitch shift; edge bands repeated)
+    time_shift_frames: 25          # shift by -25..+25 frames = +/- 0.25 s (10 ms hop); vacated frames = padding
+    noise_std_db: 1.0              # light Gaussian noise, sd 1 dB, on real values
+    freq_masks_max: 2              # SpecAugment: 1 or 2 frequency masks ...
+    freq_mask_bins: 12             # ... each 0..12 mel bins wide
+    time_masks_max: 2              # SpecAugment: 1 or 2 time masks ...
+    time_mask_frames: 40           # ... each 0..40 frames wide, inside the real audio; masks = training mean
+  num_workers: 0                   # data is held in RAM; worker processes are not needed on Windows
+  deterministic: true              # cuDNN deterministic algorithms (slightly slower, repeatable)

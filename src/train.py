@@ -3,8 +3,16 @@
     python -m src.train --fold 0 --seed 1 --pretrained true
     python -m src.train --fold 0 --seed 1 --pretrained false
     python -m src.train --fold 0 --seed 1 --pretrained true --smoke   # quick check + time estimate
+    python -m src.train --fold 0 --seed 1 --pretrained true --config configs/train_aug.yaml       # Change A
+    python -m src.train --fold 0 --seed 1 --pretrained true --config configs/train_valactor.yaml  # Change B
 
-Output folder (default models/fold{k}_seed{s}_{pretrained|scratch}/):
+Optional config keys (absent in configs/train.yaml, so the baseline is unchanged):
+    run_tag                 output folder suffix instead of pretrained/scratch
+    train.augmentation      dict of training-only augmentation settings (src/data/augment.py)
+    validation              {mode: holdout_actor, val_actor_by_fold: {...}}: one training actor = validation
+A folder that already contains DONE is never overwritten.
+
+Output folder (default models/fold{k}_seed{s}_{run_tag | pretrained | scratch}/):
     best.pt            best checkpoint (by validation macro-F1)
     settings.json      every setting, seeds, library versions, GPU
     epochs.csv         per epoch: train loss, val loss, val accuracy, val macro-F1, seconds
@@ -33,6 +41,8 @@ from sklearn.metrics import f1_score  # noqa: E402
 from torch import nn  # noqa: E402
 from torch.utils.data import DataLoader  # noqa: E402
 
+from src.data.augment import LogMelAugment  # noqa: E402
+from src.data.splits import fold_statistics  # noqa: E402
 from src.data.torch_dataset import SpectrogramDataset, split_paths  # noqa: E402
 from src.evaluate import accuracy_by, classification_metrics, length_baseline, top_confusions  # noqa: E402
 from src.models.resnet import build_resnet18  # noqa: E402
@@ -48,6 +58,19 @@ def set_all_seeds(seed: int, deterministic: bool) -> None:
     torch.backends.cudnn.deterministic = deterministic
     if deterministic:
         torch.use_deterministic_algorithms(True, warn_only=True)
+
+
+def holdout_actor_split(split_df: pd.DataFrame, val_actor: str) -> pd.DataFrame:
+    """Change B: all clips of `val_actor` become validation, all clips of the other training actors train.
+
+    The test actor (split == "test") is untouched.
+    """
+    d = split_df.copy()
+    trainval = d["split"].isin(["train", "val"])
+    assert val_actor in set(d.loc[trainval, "actor"]), f"{val_actor} is not a training actor in this fold"
+    d.loc[trainval, "split"] = np.where(d.loc[trainval, "actor"] == val_actor, "val", "train")
+    assert not (set(d.loc[d["split"] == "test", "actor"]) & set(d.loc[d["split"] != "test", "actor"]))
+    return d
 
 
 def str2bool(v: str) -> bool:
@@ -116,8 +139,10 @@ def main(argv=None) -> None:
     pcfg = load_config(REPO_ROOT / tcfg["preprocess_config"])
     tr_cfg, op_cfg = tcfg["train"], tcfg["optim"]
     styles = pcfg["labels"]["styles"]
-    tag = "pretrained" if args.pretrained else "scratch"
+    tag = tcfg.get("run_tag") or ("pretrained" if args.pretrained else "scratch")
     out = Path(args.out) if args.out else REPO_ROOT / tcfg["models_dir"] / f"fold{fold}_seed{args.seed}_{tag}"
+    if not args.smoke and (out / "DONE").exists():
+        sys.exit(f"{out} already holds a finished run; refusing to overwrite it (use another run_tag or --out)")
 
     assert torch.cuda.is_available(), "CUDA GPU not available"
     device = torch.device("cuda")
@@ -125,7 +150,25 @@ def main(argv=None) -> None:
     set_all_seeds(args.seed, tr_cfg["deterministic"])
 
     t0 = time.time()
-    ds = {p: SpectrogramDataset(pcfg, fold, p) for p in ("train", "val", "test")}
+    # Split: the fold's CSV, or (Change B) one training actor held out entirely as validation.
+    split_df = pd.read_csv(split_paths(pcfg, fold)[0])
+    stats, val_actor = None, None
+    vcfg = tcfg.get("validation") or {"mode": "fold_csv"}
+    if vcfg["mode"] == "holdout_actor":
+        val_actor = vcfg["val_actor_by_fold"][fold]
+        split_df = holdout_actor_split(split_df, val_actor)
+        index = pd.read_csv(pcfg["paths"]["processed_dir"] / "logmel" / "index.csv")
+        stats, _ = fold_statistics(pcfg, split_df, index)  # TRAIN (2 actors) only, real frames only
+    elif vcfg["mode"] != "fold_csv":
+        sys.exit(f"unknown validation.mode {vcfg['mode']}")
+    aug_cfg = tr_cfg.get("augmentation", "none")
+    augment = None
+    if isinstance(aug_cfg, dict):
+        augment = LogMelAugment(aug_cfg, pcfg["spectrogram"]["floor_db"], seed=args.seed)
+    elif aug_cfg != "none":
+        sys.exit(f"unknown train.augmentation {aug_cfg}")
+    ds = {p: SpectrogramDataset(pcfg, fold, p, split_df=split_df, stats=stats,
+                                augment=augment if p == "train" else None) for p in ("train", "val", "test")}
     print(f"[data] fold {fold}: " + ", ".join(f"{p} {len(d)}" for p, d in ds.items())
           + f" | loaded in {time.time() - t0:.0f} s", flush=True)
     g = torch.Generator().manual_seed(args.seed)
@@ -161,7 +204,10 @@ def main(argv=None) -> None:
     settings = {
         "fold": fold, "seed": args.seed, "pretrained": args.pretrained, "lr": lr,
         "seeds_fixed": {"python": args.seed, "numpy": args.seed, "torch": args.seed, "dataloader_shuffle": args.seed},
-        "train_config": tcfg, "split_file": str(split_paths(pcfg, fold)[0].relative_to(REPO_ROOT)),
+        "train_config": tcfg, "config_file": str(Path(args.config).resolve().relative_to(REPO_ROOT)),
+        "run_tag": tag, "split_file": str(split_paths(pcfg, fold)[0].relative_to(REPO_ROOT)),
+        "validation": {"mode": vcfg["mode"], "val_actor": val_actor,
+                       "actors": {p: sorted(d.items["actor"].unique()) for p, d in ds.items()}},
         "n_clips": {p: len(d) for p, d in ds.items()},
         "normalisation": {"mean_db": ds["train"].mean, "std_db": ds["train"].std},
         "versions": {"python": platform.python_version(), "torch": torch.__version__,
@@ -169,6 +215,8 @@ def main(argv=None) -> None:
         "gpu": torch.cuda.get_device_name(0), "command": " ".join(sys.argv),
     }
     (out / "settings.json").write_text(json.dumps(settings, indent=2), encoding="utf-8")
+    if val_actor is not None:
+        split_df.to_csv(out / "split_used.csv", index=False)
 
     log, best_f1, best_epoch, bad = [], -1.0, -1, 0
     t_train = time.time()
@@ -210,7 +258,6 @@ def main(argv=None) -> None:
     manifest = pd.read_csv(pcfg["paths"]["processed_dir"] / "manifest.csv", keep_default_na=False)
     pm = pred.join(manifest.set_index("clip_id")[["style", "was_cropped", "actor"]], on="clip_id")
     m = classification_metrics(yt, pt, styles)
-    split_df = pd.read_csv(split_paths(pcfg, fold)[0])
     metrics = {
         "fold": fold, "seed": args.seed, "pretrained": args.pretrained,
         "test_actor": sorted(pm["actor"].unique()), "best_epoch": best_epoch, "best_val_macro_f1": best_f1,

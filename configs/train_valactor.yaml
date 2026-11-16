@@ -1,0 +1,38 @@
+# Change B (validation on a new voice). Identical to configs/train.yaml except `run_tag` and `validation`.
+run_tag: valactor                  # output folder models/fold{k}_seed{s}_valactor/
+# Training settings for the ResNet-18 style classifier. See DECISIONS.md for the reasoning.
+# Paths are relative to the repository root. Data paths come from configs/preprocess.yaml.
+
+preprocess_config: configs/preprocess.yaml
+models_dir: models                 # each run writes to models/fold{k}_seed{s}_{pretrained|scratch}/
+
+model:
+  arch: resnet18
+  n_classes: 7                     # label ids 0..6 as in the manifest (alphabetical styles)
+  in_channels: 1                   # one "colour" channel: the log-mel spectrogram
+
+optim:
+  name: adamw
+  lr_pretrained: 3.0e-4
+  lr_scratch: 1.0e-3
+  weight_decay: 1.0e-4
+  schedule: cosine                 # learning rate decays along a cosine curve over max_epochs
+
+train:
+  batch_size: 32
+  max_epochs: 30
+  early_stopping_patience: 6       # stop after 6 epochs without a better validation macro-F1
+  select_metric: val_macro_f1      # the checkpoint with the best value is kept
+  mixed_precision: true            # torch.autocast float16 + GradScaler
+  channels_last: true
+  augmentation: none
+  num_workers: 0                   # data is held in RAM; worker processes are not needed on Windows
+  deterministic: true              # cuDNN deterministic algorithms (slightly slower, repeatable)
+
+validation:
+  # All clips of ONE training actor are the validation set (early stopping and checkpoint choice on its
+  # macro-F1); the other 2 training actors are the training set. Normalisation statistics are recomputed
+  # from those 2 actors' clips only. Rule (fixed before any run, uses no test information): the training
+  # actor that follows the test actor in sorted order, wrapping around.
+  mode: holdout_actor
+  val_actor_by_fold: {0: ex02, 1: ex03, 2: ex04, 3: ex01}

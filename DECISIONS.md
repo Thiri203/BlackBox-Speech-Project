@@ -111,6 +111,22 @@ Cropping is uneven: half of the enunciated clips are cut, but only 15% of defaul
 | Plan: 2 seeds x 4 folds, pretrained only; random split not used for now | Final plan. Fold 0 seed 1 trained first; the other 7 runs are in `scripts/run_remaining.py`. | (script) |
 | torch 2.11.0 + torchvision 0.26.0, CUDA 12.8 build | The RTX 4060 driver supports CUDA up to 13.1; the cu128 wheels are the current official CUDA 12 builds. No Smart App Control blocks. | `requirements.txt` |
 
+## Experiments: augmentation (A) and validation on a new voice (B), seed 1, folds 0 and 2
+
+| Decision | Why | Config key / where |
+|---|---|---|
+| Each experiment has its own config and output folder (`models/fold{k}_seed1_aug`, `..._valactor`); `src/train.py` refuses to write into a folder that has `DONE` | Earlier runs must never be overwritten. | `run_tag` |
+| A: augmentation on the cached log-mel, TRAIN clips only (the dataset refuses augmentation for val / test) | Spectrograms are cached, so augmentation works on them, not on audio. | `train.augmentation`, `src/data/augment.py` |
+| A: random gain +/- 6 dB added only to real values above the floor, then clamped at -100 dB | A volume change does not turn digital silence into sound; keeping the padding at the floor avoids creating a new padding level the model never sees at test time. | `gain_db` |
+| A: frequency shift +/- 4 mel bins with the edge band repeated, not wrapped around | A wrap-around roll would move the empty top bands to the bottom, which is not like a pitch shift. | `freq_shift_bins` |
+| A: time shift +/- 25 frames (0.25 s); vacated frames get the padding value | Same value as real padding. | `time_shift_frames` |
+| A: Gaussian noise sd 1 dB on real values (the data's sd is about 23 dB) | "Light" noise. | `noise_std_db` |
+| A: SpecAugment 1-2 frequency masks of 0-12 bins and 1-2 time masks of 0-40 frames (time masks inside the real audio); masked values = 0 after standardisation = training mean | Masking with the floor would look like padding. | `freq_mask*`, `time_mask*` |
+| A: magnitudes drawn uniformly each time a clip is loaded (so some clips are barely changed); one numpy generator seeded with the run seed | Repeatable; `num_workers = 0`. | (code) |
+| B: validation = all clips of one training actor, training = all clips of the other two; early stopping and checkpoint on that actor's macro-F1 | Validation on the same voices gave about 0.99 macro-F1 in every run while test was 0.32 to 0.67, so it says little about a new voice. | `validation.mode: holdout_actor` |
+| B: validation actor = the training actor after the test actor in sorted order (wrapping): fold 0 -> ex02, fold 2 -> ex04 | A fixed rule decided before any B run. It uses no test result (choosing e.g. the "hardest" actor from earlier test scores would use test information). | `validation.val_actor_by_fold` |
+| B: normalisation mean/std recomputed from the 2 training actors only (same method as preprocessing: real frames only) | Keeps the validation actor out of the training statistics. The split used is saved as `split_used.csv` in the run folder. | (code, `fold_statistics`) |
+
 ## Reporting test results (standing rule, also in `CLAUDE.md`)
 
 | Decision | Why | Where |

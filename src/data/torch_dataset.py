@@ -6,6 +6,11 @@ returns for each clip:
     x : float32 tensor [1, 128, 400], standardised as (dB - mean) / std with the split's
         TRAIN-only global mean and std from norm_stats_<split>.json (written by preprocessing)
     y : label id 0..6
+
+Optional (used by experiments, defaults reproduce the baseline exactly):
+    split_df  a split table to use instead of the fold's CSV (e.g. one training actor held out as val)
+    stats     {"mean", "std"} to use instead of norm_stats_<split>.json (must come from that split's TRAIN)
+    augment   src.data.augment.LogMelAugment; only ever passed for the train part
 """
 from __future__ import annotations
 
@@ -25,16 +30,21 @@ def split_paths(cfg: dict, fold: int | str):
 
 
 class SpectrogramDataset(Dataset):
-    def __init__(self, cfg: dict, fold: int | str, part: str):
+    def __init__(self, cfg: dict, fold: int | str, part: str, split_df: pd.DataFrame | None = None,
+                 stats: dict | None = None, augment=None):
         split_csv, stats_json = split_paths(cfg, fold)
-        f = pd.read_csv(split_csv)
+        f = split_df if split_df is not None else pd.read_csv(split_csv)
         f = f[f["split"] == part].sort_values("clip_id").reset_index(drop=True)
         logmel_dir = cfg["paths"]["processed_dir"] / "logmel"
         index = pd.read_csv(logmel_dir / "index.csv")
-        items = f.merge(index[["clip_id", "file", "row"]], on="clip_id", how="left", validate="one_to_one")
+        items = f.merge(index[["clip_id", "file", "row", "n_frames_valid"]], on="clip_id", how="left",
+                        validate="one_to_one")
         assert items["row"].notna().all(), "some clips have no stored spectrogram"
-        stats = json.loads(stats_json.read_text(encoding="utf-8"))
+        if stats is None:
+            stats = json.loads(stats_json.read_text(encoding="utf-8"))
         self.mean, self.std = float(stats["mean"]), float(stats["std"])
+        assert augment is None or part == "train", "augmentation is for training clips only"
+        self.augment = augment
 
         arrays = {fn: np.load(logmel_dir / fn, mmap_mode="r") for fn in items["file"].unique()}
         first = next(iter(arrays.values()))
@@ -42,6 +52,7 @@ class SpectrogramDataset(Dataset):
         for fn, g in items.groupby("file"):
             self.x[g.index.to_numpy()] = arrays[fn][g["row"].to_numpy().astype(int)]
         self.y = items["label"].to_numpy(dtype=np.int64)
+        self.n_valid = items["n_frames_valid"].to_numpy(dtype=np.int64)
         self.clip_ids = items["clip_id"].tolist()
         self.items = items
 
@@ -49,5 +60,10 @@ class SpectrogramDataset(Dataset):
         return len(self.y)
 
     def __getitem__(self, i: int):
-        x = (self.x[i].astype(np.float32) - self.mean) / self.std
-        return torch.from_numpy(x).unsqueeze(0), int(self.y[i])
+        x = self.x[i].astype(np.float32)
+        if self.augment is None:
+            x = (x - self.mean) / self.std
+        else:
+            x, start, end = self.augment.db_stage(x, int(self.n_valid[i]))
+            x = self.augment.mask_stage((x - self.mean) / self.std, start, end)
+        return torch.from_numpy(np.ascontiguousarray(x)).unsqueeze(0), int(self.y[i])
