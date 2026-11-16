@@ -47,6 +47,55 @@ def spread(s: pd.Series, pct: bool) -> str:
     return f"{f(s.mean())} (sd {sd_txt}; {f(s.min())} to {f(s.max())})"
 
 
+def per_fold_confusion_sections(df: pd.DataFrame) -> list[str]:
+    """Confusion-matrix image and per-style precision / recall / F1 table for every fold.
+
+    Source: reports/training_all/checkpoint_test_metrics.json, written by `python -m src.eval_checkpoints`
+    (best.pt of every run re-evaluated on its test actor). Required for every finished run (see CLAUDE.md).
+    """
+    src = OUT / "checkpoint_test_metrics.json"
+    if not src.exists():
+        raise SystemExit(f"{src} missing: run `python -m src.eval_checkpoints` first")
+    ev = json.loads(src.read_text(encoding="utf-8"))
+    styles, er = ev["styles"], ev["runs"]
+    missing = [f"fold{f}_seed{s}_pretrained" for f, s in zip(df["fold"], df["seed"])
+               if f"fold{f}_seed{s}_pretrained" not in er]
+    if missing:
+        raise SystemExit(f"no checkpoint test evaluation for {missing}: run `python -m src.eval_checkpoints`")
+
+    md = ["## Test confusion matrices and per-style precision, recall, F1", "",
+          "Each run's best checkpoint (`best.pt`) loaded again and applied to its test actor; no retraining "
+          "(`python -m src.eval_checkpoints`). The predictions match each run's saved `test_predictions.csv` "
+          "clip for clip. Matrix: rows = true style, columns = predicted style; each box shows the share of "
+          "its row and the clip count. Precision: of the clips predicted as this style, the share that "
+          "really are. Recall: of the clips of this style, the share found. F1: their harmonic mean.", ""]
+    for fold, g in df.groupby("fold"):
+        g = g.sort_values("seed")
+        rs = [er[f"fold{fold}_seed{s}_pretrained"] for s in g["seed"]]
+        agree = min(r["agreement_with_saved_predictions"] for r in rs)
+        md += [f"### Fold {fold} (test actor {', '.join(rs[0]['test_actor'])}, {rs[0]['n_test']} clips)", "",
+               f"![Test confusion matrices, fold {fold}](confusion_fold{fold}.png)", ""]
+        if agree < 1:
+            md += [f"Note: re-evaluated predictions match the saved ones for only {agree:.2%} of clips.", ""]
+        rows = []
+        for s in styles:
+            row = {"style": s, "test clips": rs[0]["per_class"][s]["support"]}
+            for r in rs:
+                pc = r["per_class"][s]
+                for k in ("precision", "recall", "f1"):
+                    row[f"seed {r['seed']} {'F1' if k == 'f1' else k}"] = f"{pc[k]:.2f}"
+            rows.append(row)
+        row = {"style": "**macro average**", "test clips": rs[0]["n_test"]}
+        for r in rs:
+            pcs = r["per_class"].values()
+            for k in ("precision", "recall", "f1"):
+                row[f"seed {r['seed']} {'F1' if k == 'f1' else k}"] = (
+                    f"**{sum(p[k] for p in pcs) / len(styles):.2f}**")
+        rows.append(row)
+        md += [md_table(pd.DataFrame(rows)), ""]
+    return md
+
+
 def build() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     df = collect()
@@ -98,6 +147,7 @@ def build() -> None:
         md_table(runs),
         "",
     ]
+    md += per_fold_confusion_sections(df)
     notes = OUT / "notes.md"  # plain-language notes written by a person after looking at the numbers
     if notes.exists():
         md += [notes.read_text(encoding="utf-8")]

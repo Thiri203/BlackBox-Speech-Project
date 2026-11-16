@@ -40,6 +40,70 @@ Finished runs: 8 of 8.
 | 3 | ex04 | 1 | 61.0% | 0.562 | 0.992 | 21.5% / 0.155 | 26 (20) | 11.8 |
 | 3 | ex04 | 2 | 61.5% | 0.580 | 0.992 | 21.5% / 0.155 | 24 (18) | 10.9 |
 
+## Test confusion matrices and per-style precision, recall, F1
+
+Each run's best checkpoint (`best.pt`) loaded again and applied to its test actor; no retraining (`python -m src.eval_checkpoints`). The predictions match each run's saved `test_predictions.csv` clip for clip. Matrix: rows = true style, columns = predicted style; each box shows the share of its row and the clip count. Precision: of the clips predicted as this style, the share that really are. Recall: of the clips of this style, the share found. F1: their harmonic mean.
+
+### Fold 0 (test actor ex01, 2657 clips)
+
+![Test confusion matrices, fold 0](confusion_fold0.png)
+
+| style | test clips | seed 1 precision | seed 1 recall | seed 1 F1 | seed 2 precision | seed 2 recall | seed 2 F1 |
+|---|---|---|---|---|---|---|---|
+| confused | 380 | 0.51 | 0.14 | 0.22 | 0.60 | 0.24 | 0.34 |
+| default | 379 | 0.52 | 0.15 | 0.24 | 0.43 | 0.16 | 0.23 |
+| enunciated | 380 | 0.73 | 0.63 | 0.68 | 0.83 | 0.30 | 0.44 |
+| happy | 380 | 0.83 | 0.13 | 0.22 | 0.90 | 0.12 | 0.21 |
+| laughing | 380 | 0.76 | 0.87 | 0.81 | 0.77 | 0.66 | 0.71 |
+| sad | 379 | 0.28 | 0.89 | 0.42 | 0.25 | 0.96 | 0.39 |
+| whisper | 379 | 0.93 | 1.00 | 0.96 | 1.00 | 1.00 | 1.00 |
+| **macro average** | 2657 | **0.65** | **0.54** | **0.51** | **0.68** | **0.49** | **0.48** |
+
+### Fold 1 (test actor ex02, 2660 clips)
+
+![Test confusion matrices, fold 1](confusion_fold1.png)
+
+| style | test clips | seed 1 precision | seed 1 recall | seed 1 F1 | seed 2 precision | seed 2 recall | seed 2 F1 |
+|---|---|---|---|---|---|---|---|
+| confused | 380 | 0.75 | 0.29 | 0.42 | 0.64 | 0.22 | 0.33 |
+| default | 380 | 0.48 | 0.94 | 0.64 | 0.49 | 0.83 | 0.62 |
+| enunciated | 380 | 0.60 | 0.67 | 0.63 | 0.54 | 0.90 | 0.67 |
+| happy | 380 | 0.70 | 0.33 | 0.45 | 0.81 | 0.25 | 0.38 |
+| laughing | 380 | 0.94 | 0.71 | 0.81 | 0.93 | 0.69 | 0.80 |
+| sad | 380 | 0.66 | 0.86 | 0.75 | 0.68 | 0.85 | 0.76 |
+| whisper | 380 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
+| **macro average** | 2660 | **0.73** | **0.69** | **0.67** | **0.73** | **0.68** | **0.65** |
+
+### Fold 2 (test actor ex03, 2660 clips)
+
+![Test confusion matrices, fold 2](confusion_fold2.png)
+
+| style | test clips | seed 1 precision | seed 1 recall | seed 1 F1 | seed 2 precision | seed 2 recall | seed 2 F1 |
+|---|---|---|---|---|---|---|---|
+| confused | 380 | 0.24 | 0.75 | 0.36 | 0.18 | 0.49 | 0.26 |
+| default | 380 | 0.79 | 0.64 | 0.70 | 0.64 | 0.41 | 0.50 |
+| enunciated | 380 | 0.67 | 0.01 | 0.01 | 1.00 | 0.03 | 0.05 |
+| happy | 380 | 0.32 | 0.52 | 0.40 | 0.25 | 0.57 | 0.35 |
+| laughing | 380 | 0.44 | 0.06 | 0.10 | 0.09 | 0.02 | 0.03 |
+| sad | 380 | 0.10 | 0.03 | 0.05 | 0.20 | 0.03 | 0.05 |
+| whisper | 380 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
+| **macro average** | 2660 | **0.51** | **0.43** | **0.37** | **0.48** | **0.36** | **0.32** |
+
+### Fold 3 (test actor ex04, 2659 clips)
+
+![Test confusion matrices, fold 3](confusion_fold3.png)
+
+| style | test clips | seed 1 precision | seed 1 recall | seed 1 F1 | seed 2 precision | seed 2 recall | seed 2 F1 |
+|---|---|---|---|---|---|---|---|
+| confused | 380 | 0.58 | 0.74 | 0.65 | 0.55 | 0.78 | 0.65 |
+| default | 380 | 0.33 | 0.03 | 0.06 | 0.31 | 0.04 | 0.07 |
+| enunciated | 380 | 0.46 | 0.14 | 0.21 | 0.73 | 0.42 | 0.54 |
+| happy | 380 | 0.38 | 0.89 | 0.53 | 0.33 | 0.42 | 0.37 |
+| laughing | 380 | 0.74 | 0.70 | 0.72 | 0.53 | 0.95 | 0.68 |
+| sad | 380 | 0.76 | 0.77 | 0.76 | 0.84 | 0.69 | 0.76 |
+| whisper | 379 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
+| **macro average** | 2659 | **0.61** | **0.61** | **0.56** | **0.61** | **0.62** | **0.58** |
+
 ## Notes
 
 - The test actor matters more than the seed: mean test accuracy per actor ranges from 39.5% (ex03)

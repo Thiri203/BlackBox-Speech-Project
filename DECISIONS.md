@@ -111,6 +111,14 @@ Cropping is uneven: half of the enunciated clips are cut, but only 15% of defaul
 | Plan: 2 seeds x 4 folds, pretrained only; random split not used for now | Final plan. Fold 0 seed 1 trained first; the other 7 runs are in `scripts/run_remaining.py`. | (script) |
 | torch 2.11.0 + torchvision 0.26.0, CUDA 12.8 build | The RTX 4060 driver supports CUDA up to 13.1; the cu128 wheels are the current official CUDA 12 builds. No Smart App Control blocks. | `requirements.txt` |
 
+## Reporting test results (standing rule, also in `CLAUDE.md`)
+
+| Decision | Why | Where |
+|---|---|---|
+| Every report on a trained or tested model includes (a) the test confusion matrix: rows = true style, columns = predicted style, each box the share of its row plus the clip count; and (b) a table of per-style precision, recall and F1 (with the macro average). Applies to every fold, seed and new model, including the logistic regression baseline(s). | Accuracy and macro-F1 alone hide which styles are confused with which; the error pattern differs a lot by test actor (e.g. in fold 2, sad and enunciated are mostly predicted as confused, laughing as happy). | `src/report_training.py` (single fold), `src/eval_checkpoints.py` + `src/report_all.py` (all runs) |
+| For runs already finished, the matrix comes from re-loading `best.pt` and predicting the test actor, not from retraining | Re-evaluation reproduces the saved `test_predictions.csv` clip for clip for all 8 runs, so it is the same test result. | `python -m src.eval_checkpoints` |
+| `src/report_all.py` stops with an error if a finished run has no confusion matrix / per-style metrics | So the rule cannot be skipped silently when runs are added. | `src/report_all.py` |
+
 ## Environment
 
 | Decision | Why | Where |
