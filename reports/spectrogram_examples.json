@@ -1,0 +1,14 @@
+{
+  "actor": "ex01",
+  "sentence": "a box cutter or a screwdriver",
+  "styles_with_this_sentence": 7,
+  "clips": {
+    "confused": "ex01_confused_00260",
+    "default": "ex01_default_00260",
+    "enunciated": "ex01_enunciated_00260",
+    "happy": "ex01_happy_00260",
+    "laughing": "ex01_laughing_00260",
+    "sad": "ex01_sad_00260",
+    "whisper": "ex01_whisper_00260"
+  }
+}

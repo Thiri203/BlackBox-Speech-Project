@@ -1,0 +1,6 @@
+clip_id,actor,style,peak,rms_dbfs,n_over_full_scale_16k,possibly_clipped,near_silent,over_full_scale_after_resample
+ex01_happy_00081,ex01,happy,0.9993234872817992,-23.07160411324019,0,True,False,False
+ex01_laughing_00009,ex01,laughing,1.0,-21.17775296344584,4,True,False,True
+ex02_laughing_00292,ex02,laughing,1.0,-25.185280821782857,2,True,False,True
+ex02_laughing_00326,ex02,laughing,0.9999998807907104,-27.140464192294097,0,True,False,False
+ex02_whisper_00117,ex02,whisper,0.9999998807907104,-26.4835533005205,0,True,False,False

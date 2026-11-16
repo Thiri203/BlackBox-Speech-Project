@@ -1,0 +1,142 @@
+# Decisions log
+
+Every preprocessing choice, one line of reasoning, and the config key in
+[`configs/preprocess.yaml`](configs/preprocess.yaml) that changes it. Numbers refer to the
+dataset commit pinned below. Rerun `python -m src.run_preprocess` after any change.
+
+## Data source
+
+| Decision | Why | Config key |
+|---|---|---|
+| Hugging Face `ylacombe/expresso`, files `read/*` only | The read part has the 4 actors x 7 styles we need; conversational audio is not used. | `dataset.repo_id`, `dataset.allow_patterns` |
+| Pin commit `9fb79a189698de3255eff48edd2bc0d9e487adc0` | Everyone downloads byte-identical files even if the dataset is updated. | `dataset.revision` |
+| Decode with `soundfile` from the parquet bytes, no `datasets` library | Fewer dependencies, full control over decoding; we measure the real sample rate. Result: all 11,615 clips are 48 kHz, mono. | (code) |
+
+## Which clips are kept
+
+| Decision | Why | Config key |
+|---|---|---|
+| Keep only confused, default, enunciated, happy, laughing, sad, whisper | The 7 target classes. The `style` column also holds `emphasis` (800), `essentials` (160), `longform` (8), `singing` (11): 979 rows excluded. There is no "narration" style in this config. | `labels.styles` |
+| Do **not** relabel emphasis/essentials as "default" | They are read in the default voice (ids `ex0X_default_emphasis_*`), but adding 960 clips would make "default" 1.6x larger than the other classes and their sentences are a different text set. Set `[emphasis, essentials]` to include them. | `labels.merge_into_default` |
+| Label ids alphabetical: confused 0, default 1, enunciated 2, happy 3, laughing 4, sad 5, whisper 6 | Simple, stable, documented order. The code checks the list is sorted. | `labels.styles` |
+| Remove duplicate ids and byte-identical audio (keep first by id) | Found 8 duplicate ids and 8 identical-audio copies. All 8 are the `longform` rows: each reuses id `ex0X_default_00001` and carries the exact audio of that default clip (twice per actor), with a long paragraph as text. So the mirror's long-form audio is wrong, not just duplicated. They are already excluded by the style filter; **0 duplicates remain among the 7 styles**, so 0 rows were removed for duplication. | (code) |
+| **No clip is dropped for length** (final plan) | All 10,636 7-style clips are kept: 1,518 to 1,520 per style, 379 or 380 per actor x style. | `audio.long_clip_policy` |
+
+## Input window: 4 s, crop instead of drop (final plan)
+
+| Decision | Why | Config key |
+|---|---|---|
+| Window of 4 s | Final plan after feedback. 72.8% of the clips are 4 s or shorter (median 2.95 s); a fixed short window keeps the input small (128 x 400) and splits evenly into 16 segments of 250 ms for the explanation tests. | `audio.max_seconds` |
+| Clips longer than 4 s keep their **first** 4 s ("crop"); shorter clips are padded with silence | Nothing is lost from the class balance. `was_cropped`, `original_duration` and `original_n_samples_16k` are in the manifest; `duration_s` and `n_samples_16k` describe the real audio **inside** the window. `"drop"` restores the old behaviour (remove long clips). | `audio.long_clip_policy` |
+| eGeMAPS uses the same first 4 s | So the baseline and the ResNet see exactly the same audio. | (code, `src/features/egemaps.py`) |
+
+History: the window was first 8 s (drop; 324 clips dropped, 144 of them enunciated), then
+10 s (drop; 108 dropped, 61 enunciated), then this final 4 s crop.
+
+Clips cropped to their first 4 s: 2,893 of 10,636 (27.2%), per actor x style
+(also in `reports/cropped_actor_style.md`):
+
+| actor | confused | default | enunciated | happy | laughing | sad | whisper | total |
+|---|---|---|---|---|---|---|---|---|
+| ex01 | 137 (36.1%) | 79 (20.8%) | 204 (53.7%) | 94 (24.7%) | 180 (47.4%) | 78 (20.6%) | 106 (28.0%) | 878 (33.0%) |
+| ex02 | 142 (37.4%) | 56 (14.7%) | 162 (42.6%) | 67 (17.6%) | 136 (35.8%) | 93 (24.5%) | 85 (22.4%) | 741 (27.9%) |
+| ex03 | 93 (24.5%) | 45 (11.8%) | 176 (46.3%) | 50 (13.2%) | 86 (22.6%) | 101 (26.6%) | 55 (14.5%) | 606 (22.8%) |
+| ex04 | 120 (31.6%) | 50 (13.2%) | 200 (52.6%) | 48 (12.6%) | 106 (27.9%) | 67 (17.6%) | 77 (20.3%) | 668 (25.1%) |
+| total | 492 (32.4%) | 230 (15.1%) | 742 (48.8%) | 259 (17.0%) | 508 (33.4%) | 339 (22.3%) | 323 (21.3%) | 2,893 (27.2%) |
+
+Cropping is uneven: half of the enunciated clips are cut, but only 15% of default clips.
+
+## Audio processing
+
+| Decision | Why | Config key |
+|---|---|---|
+| Mono, resample 48 kHz to 16 kHz with `soxr_hq` | 16 kHz keeps everything up to 8 kHz, which holds nearly all speech information, at a third of the data. soxr is deterministic and high quality. | `audio.target_sr`, `audio.resample_type` |
+| Save resampled clips (full length, not cropped) as 24 bit FLAC in `data/interim/audio16k/` | Lossless and compact; eGeMAPS, LIME and counterfactual edits use the same audio as the model (taking the first `n_samples_16k` samples). | `audio.audio16k_subtype` |
+| No loudness, peak or RMS normalisation anywhere | Loudness is a style cue and a counterfactual variable; the model must be able to see it. | (code, intentionally absent) |
+| Only warn about clipping (peak >= 0.999) or near silence (RMS < -50 dBFS) | Nothing is removed for this. Result: 5 possibly clipped clips, 0 near-silent, see `reports/audio_warnings.csv` (measured on the full clip). In two of them a few samples exceed full scale after resampling and are clipped to +/-1 when saved (negligible). | `audio.clip_warn_peak`, `audio.silence_warn_dbfs` |
+| Pad with zeros at the end to 4 s; store `n_samples_16k` and `n_frames_valid` | Every input has the same shape; later code can ignore padding. Padding becomes the fixed floor value (-100 dB) in the spectrogram. | `audio.max_seconds` |
+| Decode with 4 parallel workers | More workers ran out of memory on the dev machine. Does not affect results. | `audio.num_workers` |
+
+## Log-mel spectrogram
+
+| Decision | Why | Config key |
+|---|---|---|
+| 25 ms Hann window (400 samples), n_fft 512, hop 10 ms (160) | Standard speech settings; 100 frames per second. | `spectrogram.win_length`, `n_fft`, `hop_length`, `window` |
+| Exactly 400 frames per clip (frame t centred at t x 10 ms) | librosa returns 401 frames for 4 s (one more centred exactly at 4.000 s); we drop that last frame so 4 s = 400 frames = 16 segments x 25 frames. | (code, from `audio.max_seconds`) |
+| A frame counts as real when its centre lies inside the real audio: `n_frames_valid = ceil(n_samples_16k / 160)` | Clear rule shared by the statistics and the segment table. | (code) |
+| 128 mel bands, 20 Hz to 8,000 Hz | Fine frequency detail for a CNN; 8 kHz is the top frequency at 16 kHz. | `spectrogram.n_mels`, `fmin`, `fmax` |
+| Power spectrogram, dB with fixed reference 1.0 | A per-clip reference (librosa's `ref=np.max`) would erase loudness differences between clips. | `spectrogram.power`, `ref` |
+| Floor at -100 dB (amin 1e-10) | Silence and padding get a defined value instead of minus infinity. | `spectrogram.amin`, `floor_db` |
+| `center=True`, zero padding at the edges | Frame t is centred at t x 10 ms; zero padding (not reflection) adds no fake signal. | `spectrogram.center`, `pad_mode` |
+| Mel filters: librosa defaults (Slaney scale and area normalisation) | The common default; not exposed separately. | (librosa default) |
+| Store raw dB values, unstandardised, as float16, one `.npy` per actor + `index.csv` | float16 rounding is at most 0.03 dB here; halves disk use (about 1.1 GB total, 128 x 400 per clip). One file per actor loads fast with memory mapping. | `spectrogram.dtype` |
+
+## Segment table
+
+| Decision | Why | Config key |
+|---|---|---|
+| `data/processed/segments.csv`: 16 segments of 250 ms per clip with `is_real_audio`, `n_real_frames`, `mean_db` | Building block for the deletion and pause tests. A partly real segment counts as real. `mean_db` = mean over all mel bands and the segment's real frames, empty for pure padding. No speech / pause threshold yet. | `segments.length_ms` |
+| Keep `n_real_frames` in the table | The last real segment of a clip may hold only 1 or 2 real frames of the clip's quiet ending, whose analysis windows reach into the padding; 369 real segments (0.3%) have `mean_db` below -90 dB, 3 sit at -100 dB. `n_real_frames` lets later code ignore such slivers. | (code) |
+
+## Splits
+
+| Decision | Why | Config key |
+|---|---|---|
+| **Group every split by `group_id` = actor + id number** (e.g. `ex01_happy_00260` -> `ex01_00260`) | Final plan. The parallel text check showed that the id number, not the exact text, identifies the prompt: in 258 of 1,520 id groups some style uses a wording variant ("I'm" / "I am"). Grouping by text let these variants sit in validation while their siblings were in training (10.6% to 19.4% of validation clips). Now 0, checked by assertion. | (code) |
+| Leave-one-actor-out, 4 folds, fold k tests on the k-th actor in sorted order (ex01..ex04) | Measures generalisation to an unseen voice. | (code) |
+| LOAO validation: about 20% of the other 3 actors' clips, `StratifiedGroupKFold(5, shuffle, seed 42)`, first fold, stratified by actor x style | Every actor x style combination is represented. | `splits.val_fraction`, `seed` |
+| **Random split** `random_split.csv`: 60 / 15 / 25 train / val / test, all 4 actors in every part | Final plan: measures style recognition when the voice is known. Grouped by `group_id`, so only the speaker can leak, never the prompt. Test is drawn first (`StratifiedGroupKFold(4)`), then validation from the rest (`StratifiedGroupKFold(5)`), both seed 42. Stratified by actor x style, which also stratifies by style and guarantees every actor in every part. Result: 59.99% / 15.01% / 25.00%; each part has 1/7 of every style and roughly a quarter of each actor. | `splits.random`, `seed` |
+| Assertions (run stops on failure) | Every split: no clip twice, no id group in two parts. LOAO: the test actor never in train or val, only the test actor in test. Random: every actor and every style in every part. | (code) |
+| Report, do not fix, exact sentences shared across parts (`reports/sentence_overlap.csv`) | The same normalised text can still sit in two different id groups (another actor, or the same actor under another number). This is now tiny: at most 7 clips per comparison (LOAO test vs train: fold 1 4 clips, fold 2 7 clips; LOAO val vs train: 1 clip in folds 0, 2 and 3; random val vs train 5 clips, random test vs train 1 clip). | (report only) |
+| Text normalisation (lowercase, remove `*`, tags like `<laugh>`, punctuation; keep apostrophes) | Now used only for the reports above, not for grouping. | `splits.text_strip_chars`, `text_remove_tags`, `text_remove_punctuation` |
+| Normalisation statistics from TRAIN clips only, padding frames excluded, global and per mel band, stored as JSON, not applied | Avoids leaking validation/test information; padding would drag the mean towards -100 dB. Computed exactly from the stored float16 values. One file per fold and one for the random split. | (code) |
+| Fill values for deletion tests from TRAIN clips only, real frames only: per-band mean dB ("average" fill) and per-band 10th percentile dB ("room noise" fill), `fill_values_{fold_k,random}.json` | Writing the padding value (-100 dB) into a deleted segment creates a "perfect silence" never seen inside real speech; room-noise level is a more natural "nothing here", the mean a neutral alternative. Exact percentiles via value counts over float16 (inverted-CDF definition). Gap of the room-noise level above the padding value, over bands: median 18.9 to 20.6 dB depending on the split, smallest 6.8 to 8.2 dB, largest 57.2 to 59.5 dB (lowest band highest). | `splits.fill_percentile` |
+| Top band note | Band 127 (about 7.8 kHz) is the one exception: its room-noise level equals the padding value (-100 dB) in every split, because converting to 16 kHz removes almost all sound just below 8 kHz. | (observation) |
+
+## Training (ResNet-18), settings in `configs/train.yaml`
+
+| Decision | Why | Config key / flag |
+|---|---|---|
+| torchvision ResNet-18, ImageNet weights, first convolution 1 channel = average of the pretrained RGB filters, last layer 7 classes | Final plan. Averaging keeps the pretrained filters' response to a grey image; 7 outputs match label ids 0..6. | `model.*`, `--pretrained` |
+| From-scratch pilot (run B) with identical settings except learning rate 1e-3 | The proposal asks whether ImageNet pretraining helps on spectrograms. A higher rate is usual when starting from random weights. | `--pretrained false`, `optim.lr_scratch` |
+| Input standardised with the fold's TRAIN-only global mean and std (padding excluded from the statistics) | Exactly as written by preprocessing; no information from validation or test. Because padding is excluded, standardised inputs average about -0.6 rather than 0 (padding sits at about -2.3); that is expected. | `norm_stats_fold_{k}.json` |
+| AdamW, lr 3e-4, weight decay 1e-4, cosine schedule over 30 epochs, batch 32 | Common, stable defaults for fine-tuning a ResNet. | `optim.*`, `train.batch_size`, `train.max_epochs` |
+| Early stopping, patience 6, on validation macro-F1; keep the best checkpoint by validation macro-F1 | Macro-F1 weighs all 7 styles equally. | `train.early_stopping_patience` |
+| No data augmentation | Final plan: keep the first experiments simple and interpretable. | `train.augmentation` |
+| Mixed precision (float16 autocast + GradScaler), channels_last | Faster training and less GPU memory; standard practice (speed-up not measured here). | `train.mixed_precision`, `train.channels_last` |
+| Seeds fixed for Python, NumPy, torch and the data shuffling; cuDNN deterministic | Repeatable runs; saved in `settings.json`. Some GPU operations have no deterministic version (torch only warns), so reruns can differ slightly. | `--seed`, `train.deterministic` |
+| Whole split held in RAM, `num_workers = 0` | About 1.1 GB for all clips; worker processes are slow to start on Windows and unnecessary here. | `train.num_workers` |
+| Test set used once, after training, with the best checkpoint | Avoids choosing anything on the test actor. | (code) |
+| Shortcut check: logistic regression on `duration_s` and `was_cropped` only, same train and test clips | The share of the 4 s window that holds real audio depends on style, so length alone carries some style information. Reported next to chance (1/7) and the majority class. | (code, `src/evaluate.py`) |
+| Plan: 2 seeds x 4 folds, pretrained only; random split not used for now | Final plan. Fold 0 seed 1 trained first; the other 7 runs are in `scripts/run_remaining.py`. | (script) |
+| torch 2.11.0 + torchvision 0.26.0, CUDA 12.8 build | The RTX 4060 driver supports CUDA up to 13.1; the cu128 wheels are the current official CUDA 12 builds. No Smart App Control blocks. | `requirements.txt` |
+
+## Environment
+
+| Decision | Why | Where |
+|---|---|---|
+| Python 3.11 | Well supported by torch and opensmile. | README |
+| pandas 2.2.3 and pyarrow 19.0.1 instead of the newest | Windows Smart App Control blocked the DLLs of pandas 3.1.1 and pyarrow 26.0.1 on the dev machine. scikit-learn 1.9.1 was blocked once, then loaded on retry. | `requirements.txt` |
+| Seed 42 everywhere; outputs fingerprinted | Reproducibility; `reports/output_checksums.json` must not change between runs. | `seed` |
+
+## Observations to keep in mind (no action taken)
+
+- **Amount of real audio in the window depends on style.** Slow styles fill more of the 4 s:
+  real audio inside the window totals 87 minutes for enunciated but 64 for default, and 49%
+  of enunciated clips fill the whole window versus 15% of default clips. The amount of
+  padding is therefore a style cue the model could use as a shortcut. Worth checking in the
+  explanations (do attributions sit on the padding boundary?).
+- **Loudness appears levelled in the source recordings.** Average RMS is about -25 dBFS for
+  every style, with a standard deviation of only 2.2 dB over all clips. Whisper is on average
+  only about 2 dB quieter than default, and for ex03 and ex04 it is just as loud. Real whispering
+  is normally much quieter than normal speech. So absolute loudness carries little style
+  information here; the loudness counterfactual may show a small effect for that reason.
+- **"Each actor reads the same sentences in all 7 styles" is mostly, not exactly, true.** See
+  `reports/parallel_text_check.md`. 1,516 of 1,520 id groups exist in all 7 styles; 82.8%
+  carry the same normalised sentence in every style, 17.0% contain a small wording variant in
+  at least one style, and only 4 groups (4 clips) contain a truly different sentence. Exact text
+  matching finds only 68.6% of actor-sentence pairs in all 7 styles, because each variant
+  counts as its own sentence.
+- Some transcripts contain an encoding error (an apostrophe shown as a replacement character,
+  e.g. in "Earth's"). It only affects the text, not the audio.
+- Class balance is now nearly perfect: 1,518 to 1,520 clips per style.

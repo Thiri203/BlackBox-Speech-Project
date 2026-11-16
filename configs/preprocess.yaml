@@ -1,0 +1,76 @@
+# Every preprocessing choice lives in this file. Nothing is hardcoded in the code.
+# All paths are relative to the repository root (the folder that holds this "configs" folder).
+# See DECISIONS.md for the reasoning behind each value.
+
+seed: 42  # one fixed random seed used everywhere (splits, any shuffling)
+
+paths:
+  raw_dir: data/raw/expresso_hf          # downloaded parquet shards land here
+  interim_dir: data/interim              # decoded 16 kHz audio and the raw clip index
+  processed_dir: data/processed          # manifest and log-mel spectrograms
+  splits_dir: data/splits                # one CSV per leave-one-actor-out fold, plus normalisation stats
+  reports_dir: reports                   # tables and sanity-check figures
+
+dataset:
+  repo_id: ylacombe/expresso
+  repo_type: dataset
+  allow_patterns: ["read/*"]             # only the "read" config of Expresso
+  # Exact dataset commit. Pinned after the first download so everyone gets the same files.
+  # Set to null to take the newest version (then the code prints the commit it used).
+  revision: 9fb79a189698de3255eff48edd2bc0d9e487adc0
+
+labels:
+  # Only these 7 styles are kept. Label ids are assigned alphabetically (index in this list).
+  styles: [confused, default, enunciated, happy, laughing, sad, whisper]
+  # The style column also contains "emphasis" (800 clips) and "essentials" (160 clips), both read in
+  # the default voice. Empty list = exclude them (keeps classes balanced). Put [emphasis, essentials]
+  # here to relabel them as "default" instead. "longform" and "singing" are always excluded.
+  merge_into_default: []
+
+audio:
+  target_sr: 16000           # every clip is resampled to 16 kHz
+  resample_type: soxr_hq     # librosa resampler (deterministic, high quality)
+  max_seconds: 4             # length of the model's input window in whole seconds; null = print the coverage table and stop
+  long_clip_policy: crop     # clips longer than max_seconds: "crop" = keep the first max_seconds, "drop" = remove the clip
+  min_coverage: 0.95         # with "drop" only: max_seconds must keep at least this share of the clips
+  clip_warn_peak: 0.999      # warn if a clip's absolute peak reaches this (possible clipping)
+  silence_warn_dbfs: -50.0   # warn if a clip's overall RMS level is below this (near silent)
+  audio16k_subtype: PCM_24   # stored 16 kHz audio is lossless FLAC at 24 bit
+  num_workers: 4             # parallel processes for decoding (each needs ~0.5 to 1 GB RAM); does not change results
+
+spectrogram:
+  sr: 16000
+  win_length: 400            # 25 ms analysis window
+  n_fft: 512                 # FFT size (window is zero padded to 512)
+  hop_length: 160            # 10 ms step between frames
+  window: hann
+  center: true               # frames are centred on their time stamp
+  pad_mode: constant         # the edge padding for centring is silence (zeros)
+  n_mels: 128
+  fmin: 20.0
+  fmax: 8000.0
+  power: 2.0                 # power spectrogram (magnitude squared)
+  ref: 1.0                   # FIXED dB reference, the same for every clip
+  amin: 1.0e-10              # smallest power before taking the log, gives the floor below
+  floor_db: -100.0           # every value below this is set to this (10*log10(amin/ref))
+  dtype: float16             # storage type on disk
+
+segments:
+  length_ms: 250             # the 4 s window is described as 16 segments of 250 ms (data/processed/segments.csv)
+
+splits:
+  # All splits are grouped by group_id = actor + id number (ex01_happy_00260 -> ex01_00260).
+  val_fraction: 0.2          # LOAO folds: share of the 3 training actors' clips used for validation (must be 1/n)
+  random:                    # random split (all actors in every part); test and val/(1-test) must be 1/n
+    train: 0.60
+    val: 0.15
+    test: 0.25
+  # Text normalisation for the sentence reports (overlap, parallel text check); the splits do NOT
+  # group by text any more. Makes "<laugh> *Hi*, Bob!" and "hi bob" count as one sentence:
+  text_strip_chars: "*"          # characters removed (the emphasis asterisks)
+  text_remove_tags: true         # remove transcript tags such as <laugh>, <breath>
+  text_remove_punctuation: true  # remove punctuation except apostrophes; text is always lowercased
+  fill_percentile: 10            # per-band percentile used as the "room noise" fill for deletion tests
+
+reports:
+  example_actor: null        # actor for the per-style spectrogram figure; null = first actor

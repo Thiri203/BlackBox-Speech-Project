@@ -1,0 +1,11 @@
+split_file,test_actor,compared,clips,unique_sentences,sentences_also_in_train,clips_whose_sentence_is_in_train,share_of_clips,id_groups_also_in_train
+fold_0,ex01,val vs train,1596,268,1,1,0.0006,0
+fold_0,ex01,test vs train,2657,518,0,0,0.0,0
+fold_1,ex02,val vs train,1595,269,0,0,0.0,0
+fold_1,ex02,test vs train,2660,479,1,4,0.0015,0
+fold_2,ex03,val vs train,1595,277,1,1,0.0006,0
+fold_2,ex03,test vs train,2660,429,1,7,0.0026,0
+fold_3,ex04,val vs train,1595,288,1,1,0.0006,0
+fold_3,ex04,test vs train,2659,404,0,0,0.0,0
+random_split,"ex01,ex02,ex03,ex04",val vs train,1596,287,2,5,0.0031,0
+random_split,"ex01,ex02,ex03,ex04",test vs train,2659,444,1,1,0.0004,0
