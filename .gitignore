@@ -46,3 +46,6 @@ outputs/
 Thumbs.db
 .vscode/
 .idea/
+
+# Page images from scripts/report_to_pdf.py --check (visual check only)
+*_pages/
