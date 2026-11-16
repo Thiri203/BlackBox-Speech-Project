@@ -62,10 +62,92 @@ P = precision, R = recall, F1 = F1 score; baseline / A / B.
 | whisper | 380 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 0.99 | 1.00 |
 | **macro average** | 2660 | **0.51** | **0.43** | **0.37** | **0.54** | **0.42** | **0.39** | **0.49** | **0.44** | **0.43** |
 
+## Change A with seed 2
+
+Same config as the seed-1 A runs (`configs/train_aug.yaml`, checked identical in `settings.json`), only the seed changed. Baseline seed 2 = `models/fold{k}_seed2_pretrained`. Test set used once per run.
+
+| fold | seed | run | folder | epochs (best) | best val macro-F1 | minutes |
+|---|---|---|---|---|---|---|
+| 0 | 1 | baseline | `models/fold0_seed1_pretrained` | 28 (22) | 0.994 | 12.9 |
+| 0 | 1 | A | `models/fold0_seed1_aug` | 30 (24) | 0.989 | 15.1 |
+| 0 | 2 | baseline | `models/fold0_seed2_pretrained` | 12 (6) | 0.990 | 5.5 |
+| 0 | 2 | A | `models/fold0_seed2_aug` | 30 (28) | 0.992 | 14.9 |
+| 2 | 1 | baseline | `models/fold2_seed1_pretrained` | 19 (13) | 0.988 | 8.7 |
+| 2 | 1 | A | `models/fold2_seed1_aug` | 30 (29) | 0.982 | 15.1 |
+| 2 | 2 | baseline | `models/fold2_seed2_pretrained` | 14 (8) | 0.982 | 6.4 |
+| 2 | 2 | A | `models/fold2_seed2_aug` | 28 (22) | 0.983 | 14.0 |
+
+### Fold 0 (test actor ex01), seed 2
+
+![Test confusion matrices, fold 0, seed 2](confusion_fold0_seed2.png)
+
+P = precision, R = recall, F1 = F1 score; baseline / A.
+
+| style | test clips | baseline P | baseline R | baseline F1 | A P | A R | A F1 |
+|---|---|---|---|---|---|---|---|
+| confused | 380 | 0.60 | 0.24 | 0.34 | 0.40 | 0.44 | 0.42 |
+| default | 379 | 0.43 | 0.16 | 0.23 | 0.51 | 0.49 | 0.50 |
+| enunciated | 380 | 0.83 | 0.30 | 0.44 | 0.78 | 0.44 | 0.56 |
+| happy | 380 | 0.90 | 0.12 | 0.21 | 0.53 | 0.25 | 0.34 |
+| laughing | 380 | 0.77 | 0.66 | 0.71 | 0.85 | 0.59 | 0.70 |
+| sad | 379 | 0.25 | 0.96 | 0.39 | 0.41 | 0.91 | 0.56 |
+| whisper | 379 | 1.00 | 1.00 | 1.00 | 0.99 | 1.00 | 0.99 |
+| **macro average** | 2657 | **0.68** | **0.49** | **0.48** | **0.64** | **0.59** | **0.58** |
+
+### Fold 2 (test actor ex03), seed 2
+
+![Test confusion matrices, fold 2, seed 2](confusion_fold2_seed2.png)
+
+P = precision, R = recall, F1 = F1 score; baseline / A.
+
+| style | test clips | baseline P | baseline R | baseline F1 | A P | A R | A F1 |
+|---|---|---|---|---|---|---|---|
+| confused | 380 | 0.18 | 0.49 | 0.26 | 0.25 | 0.87 | 0.38 |
+| default | 380 | 0.64 | 0.41 | 0.50 | 0.64 | 0.43 | 0.51 |
+| enunciated | 380 | 1.00 | 0.03 | 0.05 | 1.00 | 0.04 | 0.07 |
+| happy | 380 | 0.25 | 0.57 | 0.35 | 0.39 | 0.16 | 0.23 |
+| laughing | 380 | 0.09 | 0.02 | 0.03 | 0.65 | 0.61 | 0.63 |
+| sad | 380 | 0.20 | 0.03 | 0.05 | 0.02 | 0.01 | 0.01 |
+| whisper | 380 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
+| **macro average** | 2660 | **0.48** | **0.36** | **0.32** | **0.57** | **0.44** | **0.41** |
+
+## Baseline vs A on both seeds
+
+Test set. Change = A minus baseline with the same seed (accuracy in points).
+
+### Fold 0 (test actor ex01)
+
+| metric | seed 1 baseline | seed 1 A | seed 2 baseline | seed 2 A | change seed 1 | change seed 2 |
+|---|---|---|---|---|---|---|
+| accuracy | 54.4% | 65.0% | 49.1% | 58.8% | +10.6 | +9.7 |
+| macro-F1 | 0.507 | 0.647 | 0.475 | 0.583 | +0.140 | +0.107 |
+| recall confused | 0.14 | 0.42 | 0.24 | 0.44 | +0.28 | +0.19 |
+| recall default | 0.15 | 0.51 | 0.16 | 0.49 | +0.35 | +0.33 |
+| recall enunciated | 0.63 | 0.77 | 0.30 | 0.44 | +0.14 | +0.14 |
+| recall happy | 0.13 | 0.38 | 0.12 | 0.25 | +0.25 | +0.13 |
+| recall laughing | 0.87 | 0.61 | 0.66 | 0.59 | -0.26 | -0.07 |
+| recall sad | 0.89 | 0.86 | 0.96 | 0.91 | -0.03 | -0.06 |
+| recall whisper | 1.00 | 1.00 | 1.00 | 1.00 | +0.00 | +0.00 |
+
+### Fold 2 (test actor ex03)
+
+| metric | seed 1 baseline | seed 1 A | seed 2 baseline | seed 2 A | change seed 1 | change seed 2 |
+|---|---|---|---|---|---|---|
+| accuracy | 42.7% | 42.4% | 36.2% | 44.4% | -0.3 | +8.2 |
+| macro-F1 | 0.374 | 0.388 | 0.319 | 0.405 | +0.014 | +0.087 |
+| recall confused | 0.75 | 0.88 | 0.49 | 0.87 | +0.13 | +0.37 |
+| recall default | 0.64 | 0.44 | 0.41 | 0.43 | -0.20 | +0.02 |
+| recall enunciated | 0.01 | 0.08 | 0.03 | 0.04 | +0.07 | +0.01 |
+| recall happy | 0.52 | 0.13 | 0.57 | 0.16 | -0.39 | -0.41 |
+| recall laughing | 0.06 | 0.44 | 0.02 | 0.61 | +0.38 | +0.59 |
+| recall sad | 0.03 | 0.01 | 0.03 | 0.01 | -0.03 | -0.02 |
+| recall whisper | 1.00 | 1.00 | 1.00 | 1.00 | +0.00 | +0.00 |
+
 ## Notes
 
-- **One seed per setting.** In the baseline, the two seeds of the same fold differ by 5.3 points of
-  accuracy (fold 0) and 6.5 points (fold 2). A difference smaller than that is not clear evidence.
+- **Seeds.** B has one seed; A and the baseline have two (seed 2 for A added later, see below). In the
+  baseline, the two seeds of the same fold differ by 5.3 points of accuracy (fold 0) and 6.5 points
+  (fold 2). A difference smaller than that is not clear evidence.
 - **A (augmentation) helped on fold 0 and did not help on fold 2.** Fold 0: 54.4% -> 65.0% accuracy,
   macro-F1 0.507 -> 0.647, larger than the seed-to-seed spread; recall rose for confused, default,
   enunciated and happy, fell for laughing (0.87 -> 0.61). Fold 2: 42.7% -> 42.4% accuracy, macro-F1
@@ -84,3 +166,19 @@ P = precision, R = recall, F1 = F1 score; baseline / A / B.
   0.615 (fold 0) and 0.685 (fold 2) versus about 0.99 for the baseline and A, whose validation set
   contains the training voices. Test macro-F1 was 0.394 and 0.426, so B's validation is still too
   optimistic, but far less than the baseline's.
+
+### Does the gain of A hold on seed 2?
+
+- **Fold 0 (ex01): yes.** A beats the baseline on both seeds by a similar margin: accuracy +10.6 and
+  +9.7 points, macro-F1 +0.140 and +0.107. Both gains are larger than the baseline's seed-to-seed
+  spread (5.3 points). The pattern also repeats: recall rises for confused, default, enunciated and
+  happy on both seeds; laughing and sad drop a little.
+- **Fold 2 (ex03): not clearly.** Seed 1: no change (-0.3 points, macro-F1 +0.014). Seed 2: +8.2
+  points, macro-F1 +0.087, but mostly because the seed-2 baseline was weak (36.2%, it stopped at
+  epoch 14). A gave 42.4% and 44.4%, about the level of the better baseline seed (42.7%). Over the
+  two seeds A averages 43.4% / 0.397 against the baseline's 39.5% / 0.346; A looks more stable here,
+  not clearly better. On both seeds A trades happy recall (-0.39, -0.41) for laughing (+0.38, +0.59);
+  enunciated and sad stay near 0 with or without A.
+- **Caveat: A also trains longer.** The A runs used 28 to 30 epochs, the baseline runs 12 to 28 (they
+  stopped early). Part of the gain could come from the longer training rather than the augmentation
+  itself; the two are not separated by these runs.
