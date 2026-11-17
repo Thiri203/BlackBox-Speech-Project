@@ -189,6 +189,16 @@ convolutional layer and is covered by the sanity check instead. Not a competing 
 | Validity: tone (same rule, own seeds) on every ex02 test clip of the 6 other classes; flip = clean prediction not confused and toned prediction confused; baseline model on the same toned clips as control | The plan: score explainers only where the model provably uses the tone. | `evaluate` |
 | Explainers on up to 100 flipped clips (stratified by true class, seed 42): Grad-CAM, IG (50 steps), LIME (500 samples), IG/LIME with the 3 recomputed fills; target = confused logit; hit = top-1 real segment is the tone segment; chance = mean 1/(eligible speech segments), 1/16, and 1/(real segments); Wilson 95% intervals | The plan's score, plus the chance level for the pool actually ranked. | `evaluate` |
 
+## Calibration of the ResNet (all 8 baseline runs), `src/calibration.py`
+
+| Decision | Why | Where |
+|---|---|---|
+| Saved best checkpoints re-evaluated on their test actor with the original inference settings (float16 autocast, channels_last); predictions checked against the saved `test_predictions.csv` (100% identical, probabilities within 8e-7) | No retraining; the test set is used as before, nothing is tuned. | `src/calibration.py` |
+| Brier score = mean over clips of the sum over the 7 classes of (p_c - 1[c = true])^2, the definition in Aung's LR report; uniform guess = 6/7 = 0.857 | So the two models are compared on the same scale. | `brier` |
+| Aung's LR Brier per actor (report of 12 Nov 2026: ex01 0.604, ex02 0.462, ex03 0.859, ex04 0.495, mean 0.605) joined on the **actor id** (his fold k = our fold k-1); not checked in this repo | Fold numbers differ between the two reports. | `AUNG_LR_BRIER` |
+| Reliability: 10 equal-width bins of the highest probability, all test clips pooled over the 4 actors, one curve per seed; ECE given only as a summary of the table | The user asked for a pooled 10-bin table / plot. | `reliability` |
+| **No temperature scaling or other calibration** | The question is how calibrated the model is as trained; fitting a temperature would need a calibration set and is a separate step. | (this table) |
+
 ## Reporting test results (standing rule, also in `CLAUDE.md`)
 
 | Decision | Why | Where |
