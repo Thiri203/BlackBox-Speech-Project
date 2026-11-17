@@ -27,7 +27,7 @@ cache/
 .cache/
 
 # Model outputs / checkpoints
-models/
+/models/
 checkpoints/
 runs/
 outputs/
