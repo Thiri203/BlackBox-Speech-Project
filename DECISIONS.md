@@ -176,6 +176,19 @@ convolutional layer and is covered by the sanity check instead. Not a competing 
 | No setting was changed after seeing the results (in particular, 40 dB was kept although it moves the model's prediction for most clips) | The task says not to tune any method to look more stable. | (this table) |
 | Reading the result: on a linear model IG is exact by construction and LIME's surrogate is the right model class, so near-perfect scores show the code is correct (segment mapping, fills, baseline, target), not that IG or LIME are faithful on the ResNet | Prevents over-reading the white-box result. | `reports/explain_fold1/whitebox_lrfs.md` |
 
+## Planted-tone test (fold 1, class confused), `src/explain/planted_tone.py`
+
+| Decision | Why | Where |
+|---|---|---|
+| 1 kHz sine, one 250 ms segment aligned to the segment grid, 5 ms raised-cosine fades, **added** to the speech at amplitude sqrt(2) x the clip's RMS over its real samples (0 dB tone-to-speech, approved); never past the real audio; scaled down only if the mix would reach 0.99 (0 of 1,140 needed it, largest peak 0.80) | The plan: audible, no clipping, exactly one segment; fades avoid a broadband click; adding keeps the speech. 0 dB so the planted cue is certainly learnable. | `TONE_HZ`, `RAMP_S`, `MIX_PEAK_MAX` |
+| Tone segment drawn uniformly from the clip's fully real (25 real frames) **speech** segments (clean `mean_db` >= -55.58 dB), seeded per clip, recorded in `reports/tone_fold1/tone_plan_train_val.csv` | The plan asks for a random but known segment holding real speech. | `plan_for` |
+| Every fold-1 train and val clip of confused is toned (912 + 228); other classes and the whole test actor stay clean | The plan. | `build` |
+| Rebuilt with the same log-mel pipeline into a separate cache `data/processed/logmel_tone_confused/`; untoned rows copied byte for byte (checked); the original cache is never written | Same input pipeline as the noise test; no risk to the baseline data. Measured leakage: median 94% of the dB change in the tone segment, 6% in its two neighbours (one edge frame each). | `build` |
+| Training: `configs/train_tone.yaml` = `train.yaml` + `run_tag: tone_confused` + `logmel_dir`; seed 1, pretrained. New optional key `logmel_dir` (helper `src.utils.logmel_dir`, used by the dataset and the statistics); absent = baseline unchanged | Same recipe as the explained baseline. | `src/train.py` |
+| Normalisation and fills **recomputed from the toned training set** (approved), saved as `norm_stats.json` / `fill_values.json` in the run folder; how far they move is in the report | The recipe computes them from the training clips; the explainers on this model use its own fills. | `src/train.py` |
+| Validity: tone (same rule, own seeds) on every ex02 test clip of the 6 other classes; flip = clean prediction not confused and toned prediction confused; baseline model on the same toned clips as control | The plan: score explainers only where the model provably uses the tone. | `evaluate` |
+| Explainers on up to 100 flipped clips (stratified by true class, seed 42): Grad-CAM, IG (50 steps), LIME (500 samples), IG/LIME with the 3 recomputed fills; target = confused logit; hit = top-1 real segment is the tone segment; chance = mean 1/(eligible speech segments), 1/16, and 1/(real segments); Wilson 95% intervals | The plan's score, plus the chance level for the pool actually ranked. | `evaluate` |
+
 ## Reporting test results (standing rule, also in `CLAUDE.md`)
 
 | Decision | Why | Where |

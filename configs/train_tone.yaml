@@ -1,0 +1,31 @@
+# Planted-tone test (fold 1, class confused). Identical to configs/train.yaml except run_tag and logmel_dir.
+run_tag: tone_confused              # output folder models/fold{k}_seed{s}_tone_confused/
+logmel_dir: data/processed/logmel_tone_confused   # toned cache built by python -m src.explain.planted_tone build
+# Training settings for the ResNet-18 style classifier. See DECISIONS.md for the reasoning.
+# Paths are relative to the repository root. Data paths come from configs/preprocess.yaml.
+
+preprocess_config: configs/preprocess.yaml
+models_dir: models                 # each run writes to models/fold{k}_seed{s}_{pretrained|scratch}/
+
+model:
+  arch: resnet18
+  n_classes: 7                     # label ids 0..6 as in the manifest (alphabetical styles)
+  in_channels: 1                   # one "colour" channel: the log-mel spectrogram
+
+optim:
+  name: adamw
+  lr_pretrained: 3.0e-4
+  lr_scratch: 1.0e-3
+  weight_decay: 1.0e-4
+  schedule: cosine                 # learning rate decays along a cosine curve over max_epochs
+
+train:
+  batch_size: 32
+  max_epochs: 30
+  early_stopping_patience: 6       # stop after 6 epochs without a better validation macro-F1
+  select_metric: val_macro_f1      # the checkpoint with the best value is kept
+  mixed_precision: true            # torch.autocast float16 + GradScaler
+  channels_last: true
+  augmentation: none
+  num_workers: 0                   # data is held in RAM; worker processes are not needed on Windows
+  deterministic: true              # cuDNN deterministic algorithms (slightly slower, repeatable)

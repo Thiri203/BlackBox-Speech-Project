@@ -31,6 +31,8 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import StratifiedGroupKFold
 
+from src.utils import logmel_dir
+
 SPLIT_COLS = ["clip_id", "actor", "style", "label", "split"]
 
 
@@ -141,7 +143,7 @@ def train_value_counts(cfg: dict, fold_df: pd.DataFrame, index: pd.DataFrame) ->
     Returns (counts [n_mels, 65536], n_train_clips, n_frames).
     """
     assert np.dtype(cfg["spectrogram"]["dtype"]) == np.float16, "value counting assumes float16 storage"
-    proc = cfg["paths"]["processed_dir"] / "logmel"
+    proc = logmel_dir(cfg)
     train_ids = set(fold_df.loc[fold_df["split"] == "train", "clip_id"])
     idx = index[index["clip_id"].isin(train_ids)]
     n_mels = cfg["spectrogram"]["n_mels"]

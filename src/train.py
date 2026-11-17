@@ -46,7 +46,7 @@ from src.data.splits import fold_statistics  # noqa: E402
 from src.data.torch_dataset import SpectrogramDataset, split_paths  # noqa: E402
 from src.evaluate import accuracy_by, classification_metrics, length_baseline, top_confusions  # noqa: E402
 from src.models.resnet import build_resnet18  # noqa: E402
-from src.utils import REPO_ROOT, load_config  # noqa: E402
+from src.utils import REPO_ROOT, load_config, logmel_dir  # noqa: E402
 
 
 def set_all_seeds(seed: int, deterministic: bool) -> None:
@@ -137,6 +137,8 @@ def main(argv=None) -> None:
 
     tcfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
     pcfg = load_config(REPO_ROOT / tcfg["preprocess_config"])
+    if tcfg.get("logmel_dir"):   # planted-tone experiment: train / evaluate on a separate, modified cache
+        pcfg["paths"]["logmel_dir"] = (REPO_ROOT / tcfg["logmel_dir"]).resolve()
     tr_cfg, op_cfg = tcfg["train"], tcfg["optim"]
     styles = pcfg["labels"]["styles"]
     tag = tcfg.get("run_tag") or ("pretrained" if args.pretrained else "scratch")
@@ -157,10 +159,13 @@ def main(argv=None) -> None:
     if vcfg["mode"] == "holdout_actor":
         val_actor = vcfg["val_actor_by_fold"][fold]
         split_df = holdout_actor_split(split_df, val_actor)
-        index = pd.read_csv(pcfg["paths"]["processed_dir"] / "logmel" / "index.csv")
+        index = pd.read_csv(logmel_dir(pcfg) / "index.csv")
         stats, _ = fold_statistics(pcfg, split_df, index)  # TRAIN (2 actors) only, real frames only
     elif vcfg["mode"] != "fold_csv":
         sys.exit(f"unknown validation.mode {vcfg['mode']}")
+    fills = None
+    if tcfg.get("logmel_dir"):   # the modified cache changes the TRAIN statistics: recompute them (same method)
+        stats, fills = fold_statistics(pcfg, split_df, pd.read_csv(logmel_dir(pcfg) / "index.csv"))
     aug_cfg = tr_cfg.get("augmentation", "none")
     augment = None
     if isinstance(aug_cfg, dict):
@@ -215,6 +220,9 @@ def main(argv=None) -> None:
         "gpu": torch.cuda.get_device_name(0), "command": " ".join(sys.argv),
     }
     (out / "settings.json").write_text(json.dumps(settings, indent=2), encoding="utf-8")
+    if fills is not None:
+        (out / "norm_stats.json").write_text(json.dumps(stats, indent=2), encoding="utf-8")
+        (out / "fill_values.json").write_text(json.dumps(fills, indent=2), encoding="utf-8")
     if val_actor is not None:
         split_df.to_csv(out / "split_used.csv", index=False)
 

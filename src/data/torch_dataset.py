@@ -21,6 +21,8 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 
+from src.utils import logmel_dir as logmel_path
+
 
 def split_paths(cfg: dict, fold: int | str):
     s = cfg["paths"]["splits_dir"]
@@ -35,7 +37,7 @@ class SpectrogramDataset(Dataset):
         split_csv, stats_json = split_paths(cfg, fold)
         f = split_df if split_df is not None else pd.read_csv(split_csv)
         f = f[f["split"] == part].sort_values("clip_id").reset_index(drop=True)
-        logmel_dir = cfg["paths"]["processed_dir"] / "logmel"
+        logmel_dir = logmel_path(cfg)
         index = pd.read_csv(logmel_dir / "index.csv")
         items = f.merge(index[["clip_id", "file", "row", "n_frames_valid"]], on="clip_id", how="left",
                         validate="one_to_one")

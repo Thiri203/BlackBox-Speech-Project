@@ -25,6 +25,12 @@ def load_config(path: str | Path | None = None) -> dict:
     return cfg
 
 
+def logmel_dir(cfg: dict) -> Path:
+    """Folder of the cached log-mel spectrograms: data/processed/logmel unless cfg["paths"]["logmel_dir"] is set
+    (used only by the planted-tone experiment, which trains on a separate, modified cache)."""
+    return cfg["paths"].get("logmel_dir") or cfg["paths"]["processed_dir"] / "logmel"
+
+
 def set_seed(seed: int) -> None:
     """Fix the random seed for Python and NumPy (torch gets added later, in the model code)."""
     random.seed(seed)
