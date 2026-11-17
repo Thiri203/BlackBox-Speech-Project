@@ -1,0 +1,1953 @@
+{
+  "run": "fold1_seed1_pretrained",
+  "k_max": 8,
+  "n_random_orderings": 10,
+  "n_clips": 100,
+  "clips_with_fewer_than_8_real": 10,
+  "clips_at_k": {
+    "0": 100,
+    "1": 100,
+    "2": 100,
+    "3": 100,
+    "4": 100,
+    "5": 100,
+    "6": 99,
+    "7": 94,
+    "8": 90
+  },
+  "fills_db": {
+    "room_noise": -78.228271484375,
+    "average": -45.7443022265625,
+    "silence": -100.0
+  },
+  "summary": [
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "silence",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 3.616251780402093,
+      "logit_drop_minus_random": 1.4524163079533547,
+      "logit_drop_minus_random_ci95": [
+        1.177336658262999,
+        1.7264526800096032
+      ],
+      "logit_drop_beats_random_share": 0.86,
+      "prob_drop_area": 0.4731698653191204,
+      "prob_drop_minus_random": 0.13939523252740516,
+      "prob_drop_minus_random_ci95": [
+        0.09968229837159971,
+        0.17944617721015624
+      ],
+      "prob_drop_beats_random_share": 0.75
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "silence",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 4.0723381452785565,
+      "logit_drop_minus_random": 1.369081450903531,
+      "logit_drop_minus_random_ci95": [
+        0.9997973532123225,
+        1.7355167551098374
+      ],
+      "logit_drop_beats_random_share": 0.8305084745762712,
+      "prob_drop_area": 0.47055373394650046,
+      "prob_drop_minus_random": 0.1235366594886253,
+      "prob_drop_minus_random_ci95": [
+        0.06956142627908223,
+        0.18300142305264552
+      ],
+      "prob_drop_beats_random_share": 0.711864406779661
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "silence",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 2.9599323772871813,
+      "logit_drop_minus_random": 1.5723371998055404,
+      "logit_drop_minus_random_ci95": [
+        1.131936724087641,
+        2.017213512298053
+      ],
+      "logit_drop_beats_random_share": 0.9024390243902439,
+      "prob_drop_area": 0.47693454217240283,
+      "prob_drop_minus_random": 0.16221610592467367,
+      "prob_drop_minus_random_ci95": [
+        0.10533451696390964,
+        0.2217896259361955
+      ],
+      "prob_drop_beats_random_share": 0.8048780487804879
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "average",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 3.811849748874704,
+      "logit_drop_minus_random": 1.4132404508545287,
+      "logit_drop_minus_random_ci95": [
+        1.209526685283482,
+        1.6224095239664418
+      ],
+      "logit_drop_beats_random_share": 0.92,
+      "prob_drop_area": 0.49286114198857,
+      "prob_drop_minus_random": 0.18786724498663385,
+      "prob_drop_minus_random_ci95": [
+        0.15424211970042592,
+        0.22283091617333495
+      ],
+      "prob_drop_beats_random_share": 0.88
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "average",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 4.236218551402615,
+      "logit_drop_minus_random": 1.3539613516017786,
+      "logit_drop_minus_random_ci95": [
+        1.0912476605036725,
+        1.6352301665957536
+      ],
+      "logit_drop_beats_random_share": 0.8983050847457628,
+      "prob_drop_area": 0.4829606904188305,
+      "prob_drop_minus_random": 0.18671246025848434,
+      "prob_drop_minus_random_ci95": [
+        0.14147939244746482,
+        0.23341331655982786
+      ],
+      "prob_drop_beats_random_share": 0.8813559322033898
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "average",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 3.201172691578441,
+      "logit_drop_minus_random": 1.4985445205109253,
+      "logit_drop_minus_random_ci95": [
+        1.182109154846874,
+        1.8093291311870723
+      ],
+      "logit_drop_beats_random_share": 0.9512195121951219,
+      "prob_drop_area": 0.5071081332718538,
+      "prob_drop_minus_random": 0.18952900837592226,
+      "prob_drop_minus_random_ci95": [
+        0.13504750840910018,
+        0.24195666600636748
+      ],
+      "prob_drop_beats_random_share": 0.8780487804878049
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "room_noise",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 3.4275849866881254,
+      "logit_drop_minus_random": 1.503620366597388,
+      "logit_drop_minus_random_ci95": [
+        1.2824072377938582,
+        1.7186639235742482
+      ],
+      "logit_drop_beats_random_share": 0.95,
+      "prob_drop_area": 0.4616152220503691,
+      "prob_drop_minus_random": 0.18724779215489387,
+      "prob_drop_minus_random_ci95": [
+        0.15024446410730205,
+        0.22312974520588824
+      ],
+      "prob_drop_beats_random_share": 0.89
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "room_noise",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 3.838933904402866,
+      "logit_drop_minus_random": 1.505415078685397,
+      "logit_drop_minus_random_ci95": [
+        1.2162300303821556,
+        1.790727185393331
+      ],
+      "logit_drop_beats_random_share": 0.9661016949152542,
+      "prob_drop_area": 0.4490839595274924,
+      "prob_drop_minus_random": 0.1817716871970734,
+      "prob_drop_minus_random_ci95": [
+        0.13451658684804424,
+        0.23106470715482472
+      ],
+      "prob_drop_beats_random_share": 0.8813559322033898
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "room_noise",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 2.835643861196182,
+      "logit_drop_minus_random": 1.5010377321292785,
+      "logit_drop_minus_random_ci95": [
+        1.1921013526968076,
+        1.807054405522951
+      ],
+      "logit_drop_beats_random_share": 0.926829268292683,
+      "prob_drop_area": 0.47964801446133803,
+      "prob_drop_minus_random": 0.19512804075273316,
+      "prob_drop_minus_random_ci95": [
+        0.14369339622086252,
+        0.24540240756441672
+      ],
+      "prob_drop_beats_random_share": 0.9024390243902439
+    },
+    {
+      "method": "IG",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 3.8308106373718807,
+      "logit_drop_minus_random": 1.666975164923143,
+      "logit_drop_minus_random_ci95": [
+        1.394507375487951,
+        1.9383025870684905
+      ],
+      "logit_drop_beats_random_share": 0.87,
+      "prob_drop_area": 0.5178004625141014,
+      "prob_drop_minus_random": 0.18402582972238613,
+      "prob_drop_minus_random_ci95": [
+        0.14868916342978836,
+        0.21935091059512116
+      ],
+      "prob_drop_beats_random_share": 0.84
+    },
+    {
+      "method": "IG",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 4.276830182857721,
+      "logit_drop_minus_random": 1.5735734884826957,
+      "logit_drop_minus_random_ci95": [
+        1.2355874964540055,
+        1.9346338378491543
+      ],
+      "logit_drop_beats_random_share": 0.847457627118644,
+      "prob_drop_area": 0.5396054052955531,
+      "prob_drop_minus_random": 0.19258833083767798,
+      "prob_drop_minus_random_ci95": [
+        0.1456785564730519,
+        0.24151229017866827
+      ],
+      "prob_drop_beats_random_share": 0.8135593220338984
+    },
+    {
+      "method": "IG",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 3.1889776328922568,
+      "logit_drop_minus_random": 1.8013824554106153,
+      "logit_drop_minus_random_ci95": [
+        1.358992431212117,
+        2.2569720773605044
+      ],
+      "logit_drop_beats_random_share": 0.9024390243902439,
+      "prob_drop_area": 0.4864226180237197,
+      "prob_drop_minus_random": 0.17170418177599053,
+      "prob_drop_minus_random_ci95": [
+        0.12063078490676962,
+        0.22352362360800104
+      ],
+      "prob_drop_beats_random_share": 0.8780487804878049
+    },
+    {
+      "method": "IG",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 4.349831756993419,
+      "logit_drop_minus_random": 1.9512224589732432,
+      "logit_drop_minus_random_ci95": [
+        1.7328122838120839,
+        2.1690945281733445
+      ],
+      "logit_drop_beats_random_share": 0.97,
+      "prob_drop_area": 0.5640922040148066,
+      "prob_drop_minus_random": 0.25909830701287057,
+      "prob_drop_minus_random_ci95": [
+        0.22121408385866012,
+        0.2959709509899212
+      ],
+      "prob_drop_beats_random_share": 0.88
+    },
+    {
+      "method": "IG",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 4.740116699919092,
+      "logit_drop_minus_random": 1.8578595001182556,
+      "logit_drop_minus_random_ci95": [
+        1.5863927780632667,
+        2.1394776768897503
+      ],
+      "logit_drop_beats_random_share": 0.9491525423728814,
+      "prob_drop_area": 0.5440734867563213,
+      "prob_drop_minus_random": 0.24782525659597518,
+      "prob_drop_minus_random_ci95": [
+        0.19669281549036063,
+        0.301468814704945
+      ],
+      "prob_drop_beats_random_share": 0.8305084745762712
+    },
+    {
+      "method": "IG",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 3.788202204978425,
+      "logit_drop_minus_random": 2.0855740339109086,
+      "logit_drop_minus_random_ci95": [
+        1.7644149598557148,
+        2.456824479015927
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.5928996264111637,
+      "prob_drop_minus_random": 0.2753205015152323,
+      "prob_drop_minus_random_ci95": [
+        0.22678990717133177,
+        0.3252576446728565
+      ],
+      "prob_drop_beats_random_share": 0.9512195121951219
+    },
+    {
+      "method": "IG",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 3.5828763319779013,
+      "logit_drop_minus_random": 1.6589117118871632,
+      "logit_drop_minus_random_ci95": [
+        1.4185196271341454,
+        1.911883546955129
+      ],
+      "logit_drop_beats_random_share": 0.94,
+      "prob_drop_area": 0.4879543946807576,
+      "prob_drop_minus_random": 0.2135869647852824,
+      "prob_drop_minus_random_ci95": [
+        0.1777844334160802,
+        0.25146003921538396
+      ],
+      "prob_drop_beats_random_share": 0.88
+    },
+    {
+      "method": "IG",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 4.072880808064974,
+      "logit_drop_minus_random": 1.7393619823475055,
+      "logit_drop_minus_random_ci95": [
+        1.446011034959899,
+        2.0420316641931393
+      ],
+      "logit_drop_beats_random_share": 0.9661016949152542,
+      "prob_drop_area": 0.48911348458145903,
+      "prob_drop_minus_random": 0.22180121225104002,
+      "prob_drop_minus_random_ci95": [
+        0.17477858233231666,
+        0.26863478189359097
+      ],
+      "prob_drop_beats_random_share": 0.864406779661017
+    },
+    {
+      "method": "IG",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 2.8777479395599173,
+      "logit_drop_minus_random": 1.5431418104930137,
+      "logit_drop_minus_random_ci95": [
+        1.0996378676995038,
+        2.0032618050966042
+      ],
+      "logit_drop_beats_random_share": 0.9024390243902439,
+      "prob_drop_area": 0.4862864360431629,
+      "prob_drop_minus_random": 0.2017664623345581,
+      "prob_drop_minus_random_ci95": [
+        0.14223105668575242,
+        0.25548767235535186
+      ],
+      "prob_drop_beats_random_share": 0.9024390243902439
+    },
+    {
+      "method": "LIME",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 4.796438659334467,
+      "logit_drop_minus_random": 2.632603186885729,
+      "logit_drop_minus_random_ci95": [
+        2.411343730558978,
+        2.869548763917457
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.59426950147038,
+      "prob_drop_minus_random": 0.2604948686786647,
+      "prob_drop_minus_random_ci95": [
+        0.22821090284460263,
+        0.29121066367733933
+      ],
+      "prob_drop_beats_random_share": 0.95
+    },
+    {
+      "method": "LIME",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 5.274178410769471,
+      "logit_drop_minus_random": 2.5709217163944458,
+      "logit_drop_minus_random_ci95": [
+        2.28949982566087,
+        2.863681845682928
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.5957948578773715,
+      "prob_drop_minus_random": 0.24877778341949647,
+      "prob_drop_minus_random_ci95": [
+        0.20915463414663152,
+        0.2920027976501969
+      ],
+      "prob_drop_beats_random_share": 0.9152542372881356
+    },
+    {
+      "method": "LIME",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 4.108959504830436,
+      "logit_drop_minus_random": 2.7213643273487946,
+      "logit_drop_minus_random_ci95": [
+        2.3727652694618504,
+        3.110077837005205
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.5920744763969045,
+      "prob_drop_minus_random": 0.2773560401491753,
+      "prob_drop_minus_random_ci95": [
+        0.23155908440879128,
+        0.32572697811237894
+      ],
+      "prob_drop_beats_random_share": 1.0
+    },
+    {
+      "method": "LIME",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 4.971610345057079,
+      "logit_drop_minus_random": 2.573001047036903,
+      "logit_drop_minus_random_ci95": [
+        2.3522420162522897,
+        2.8106520058865647
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.6140381091237218,
+      "prob_drop_minus_random": 0.3090442121217857,
+      "prob_drop_minus_random_ci95": [
+        0.2723291467373767,
+        0.34382380158347375
+      ],
+      "prob_drop_beats_random_share": 0.94
+    },
+    {
+      "method": "LIME",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 5.3447060257725605,
+      "logit_drop_minus_random": 2.462448825971723,
+      "logit_drop_minus_random_ci95": [
+        2.1802458702436947,
+        2.759762803956466
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.6000548644121592,
+      "prob_drop_minus_random": 0.30380663425181287,
+      "prob_drop_minus_random_ci95": [
+        0.25337540152073756,
+        0.3562289315665039
+      ],
+      "prob_drop_beats_random_share": 0.8983050847457628
+    },
+    {
+      "method": "LIME",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 4.4347165606128485,
+      "logit_drop_minus_random": 2.7320883895453334,
+      "logit_drop_minus_random_ci95": [
+        2.3884898314332537,
+        3.0985290673059067
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.6341603393184096,
+      "prob_drop_minus_random": 0.3165812144224782,
+      "prob_drop_minus_random_ci95": [
+        0.27130031868295856,
+        0.3623950200070997
+      ],
+      "prob_drop_beats_random_share": 1.0
+    },
+    {
+      "method": "LIME",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 4.438425013158293,
+      "logit_drop_minus_random": 2.514460393067555,
+      "logit_drop_minus_random_ci95": [
+        2.3049222623395424,
+        2.72176373668483
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.5769502230226735,
+      "prob_drop_minus_random": 0.30258279312719827,
+      "prob_drop_minus_random_ci95": [
+        0.27024185858778843,
+        0.33679164784107224
+      ],
+      "prob_drop_beats_random_share": 0.95
+    },
+    {
+      "method": "LIME",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 4.8560670544391105,
+      "logit_drop_minus_random": 2.522548228721641,
+      "logit_drop_minus_random_ci95": [
+        2.26113776190947,
+        2.8083510200376405
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.5659755593442153,
+      "prob_drop_minus_random": 0.2986632870137961,
+      "prob_drop_minus_random_ci95": [
+        0.250402545167392,
+        0.3457073354487559
+      ],
+      "prob_drop_beats_random_share": 0.9322033898305084
+    },
+    {
+      "method": "LIME",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 3.8374279293639457,
+      "logit_drop_minus_random": 2.5028218002970415,
+      "logit_drop_minus_random_ci95": [
+        2.1594054367124564,
+        2.8551295182263337
+      ],
+      "logit_drop_beats_random_share": 1.0,
+      "prob_drop_area": 0.5927430317306989,
+      "prob_drop_minus_random": 0.30822305802209404,
+      "prob_drop_minus_random_ci95": [
+        0.2661469606754196,
+        0.34980443114679766
+      ],
+      "prob_drop_beats_random_share": 0.975609756097561
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "silence",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 2.163835472448738,
+      "logit_drop_sd_over_orderings": 0.10846519736250074,
+      "logit_drop_min_ordering": 1.9729239353949115,
+      "logit_drop_max_ordering": 2.291326874322125,
+      "prob_drop_area": 0.33377463279171526,
+      "prob_drop_sd_over_orderings": 0.015965940321821907,
+      "prob_drop_min_ordering": 0.30934916739956436,
+      "prob_drop_max_ordering": 0.35446646202982557
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "silence",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 2.703256694375025,
+      "logit_drop_sd_over_orderings": 0.14484628758322696,
+      "logit_drop_min_ordering": 2.4547384891349333,
+      "logit_drop_max_ordering": 2.916330284813511,
+      "prob_drop_area": 0.3470170744578751,
+      "prob_drop_sd_over_orderings": 0.024688933235756366,
+      "prob_drop_min_ordering": 0.3103294579833821,
+      "prob_drop_max_ordering": 0.3828438567666812
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "silence",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 1.387595177481641,
+      "logit_drop_sd_over_orderings": 0.2574073035411124,
+      "logit_drop_min_ordering": 0.8471723777976463,
+      "logit_drop_max_ordering": 1.7651086350195502,
+      "prob_drop_area": 0.31471843624772916,
+      "prob_drop_sd_over_orderings": 0.03462302557422709,
+      "prob_drop_min_ordering": 0.261957301458308,
+      "prob_drop_max_ordering": 0.3843758257620893
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "average",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 2.3986092980201756,
+      "logit_drop_sd_over_orderings": 0.09292847027500956,
+      "logit_drop_min_ordering": 2.258245399291317,
+      "logit_drop_max_ordering": 2.5080988842724334,
+      "prob_drop_area": 0.30499389700193613,
+      "prob_drop_sd_over_orderings": 0.017562524131316013,
+      "prob_drop_min_ordering": 0.2692144543211541,
+      "prob_drop_max_ordering": 0.3234148148637424
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "average",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 2.882257199800837,
+      "logit_drop_sd_over_orderings": 0.14772218351915292,
+      "logit_drop_min_ordering": 2.6534517231537893,
+      "logit_drop_max_ordering": 3.0580591219076716,
+      "prob_drop_area": 0.29624823016034624,
+      "prob_drop_sd_over_orderings": 0.027269329310640345,
+      "prob_drop_min_ordering": 0.25245669820655847,
+      "prob_drop_max_ordering": 0.3338036077260165
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "average",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 1.702628171067516,
+      "logit_drop_sd_over_orderings": 0.19721040242110652,
+      "logit_drop_min_ordering": 1.3966682587299197,
+      "logit_drop_max_ordering": 2.053958376162144,
+      "prob_drop_area": 0.31757912489593143,
+      "prob_drop_sd_over_orderings": 0.045919340948300656,
+      "prob_drop_min_ordering": 0.25387771366136525,
+      "prob_drop_max_ordering": 0.41064564430473066
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "room_noise",
+      "group": "all",
+      "n_clips": 100,
+      "logit_drop_area": 1.9239646200907377,
+      "logit_drop_sd_over_orderings": 0.0933836450515634,
+      "logit_drop_min_ordering": 1.7363405170823847,
+      "logit_drop_max_ordering": 2.0534969646788777,
+      "prob_drop_area": 0.27436742989547525,
+      "prob_drop_sd_over_orderings": 0.020066779761174883,
+      "prob_drop_min_ordering": 0.22910333842336705,
+      "prob_drop_max_ordering": 0.2949569617549743
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "room_noise",
+      "group": "correct",
+      "n_clips": 59,
+      "logit_drop_area": 2.3335188257174693,
+      "logit_drop_sd_over_orderings": 0.09983445359980651,
+      "logit_drop_min_ordering": 2.131809456402299,
+      "logit_drop_max_ordering": 2.4681187871918744,
+      "prob_drop_area": 0.26731227233041904,
+      "prob_drop_sd_over_orderings": 0.021491723346467904,
+      "prob_drop_min_ordering": 0.23399859227276132,
+      "prob_drop_max_ordering": 0.30100918198908644
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "room_noise",
+      "group": "wrong",
+      "n_clips": 41,
+      "logit_drop_area": 1.334606129066904,
+      "logit_drop_sd_over_orderings": 0.20070851699212433,
+      "logit_drop_min_ordering": 0.8735933855747097,
+      "logit_drop_max_ordering": 1.5926100522729716,
+      "prob_drop_area": 0.2845199737086049,
+      "prob_drop_sd_over_orderings": 0.04147675987510688,
+      "prob_drop_min_ordering": 0.1943817311796595,
+      "prob_drop_max_ordering": 0.3572963782410543
+    }
+  ],
+  "deleted_first": [
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "silence",
+      "group": "all",
+      "speech_share_k1": 0.92,
+      "speech_share_k1to3": 0.7666666666666667
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "silence",
+      "group": "correct",
+      "speech_share_k1": 0.8983050847457628,
+      "speech_share_k1to3": 0.7853107344632768
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "silence",
+      "group": "wrong",
+      "speech_share_k1": 0.9512195121951219,
+      "speech_share_k1to3": 0.7398373983739838
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "average",
+      "group": "all",
+      "speech_share_k1": 0.92,
+      "speech_share_k1to3": 0.7666666666666667
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "average",
+      "group": "correct",
+      "speech_share_k1": 0.8983050847457628,
+      "speech_share_k1to3": 0.7853107344632768
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "average",
+      "group": "wrong",
+      "speech_share_k1": 0.9512195121951219,
+      "speech_share_k1to3": 0.7398373983739838
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "room_noise",
+      "group": "all",
+      "speech_share_k1": 0.92,
+      "speech_share_k1to3": 0.7666666666666667
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "room_noise",
+      "group": "correct",
+      "speech_share_k1": 0.8983050847457628,
+      "speech_share_k1to3": 0.7853107344632768
+    },
+    {
+      "method": "GradCAM",
+      "score_fill": "none",
+      "deletion_fill": "room_noise",
+      "group": "wrong",
+      "speech_share_k1": 0.9512195121951219,
+      "speech_share_k1to3": 0.7398373983739838
+    },
+    {
+      "method": "IG",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "all",
+      "speech_share_k1": 0.58,
+      "speech_share_k1to3": 0.7366666666666667
+    },
+    {
+      "method": "IG",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "correct",
+      "speech_share_k1": 0.6610169491525424,
+      "speech_share_k1to3": 0.7740112994350282
+    },
+    {
+      "method": "IG",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "wrong",
+      "speech_share_k1": 0.4634146341463415,
+      "speech_share_k1to3": 0.6829268292682927
+    },
+    {
+      "method": "IG",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "all",
+      "speech_share_k1": 0.4,
+      "speech_share_k1to3": 0.6766666666666666
+    },
+    {
+      "method": "IG",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "correct",
+      "speech_share_k1": 0.4406779661016949,
+      "speech_share_k1to3": 0.6949152542372882
+    },
+    {
+      "method": "IG",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "wrong",
+      "speech_share_k1": 0.34146341463414637,
+      "speech_share_k1to3": 0.6504065040650406
+    },
+    {
+      "method": "IG",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "all",
+      "speech_share_k1": 0.53,
+      "speech_share_k1to3": 0.7366666666666667
+    },
+    {
+      "method": "IG",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "correct",
+      "speech_share_k1": 0.5932203389830508,
+      "speech_share_k1to3": 0.7627118644067796
+    },
+    {
+      "method": "IG",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "wrong",
+      "speech_share_k1": 0.43902439024390244,
+      "speech_share_k1to3": 0.6991869918699187
+    },
+    {
+      "method": "LIME",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "all",
+      "speech_share_k1": 0.51,
+      "speech_share_k1to3": 0.7
+    },
+    {
+      "method": "LIME",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "correct",
+      "speech_share_k1": 0.6271186440677966,
+      "speech_share_k1to3": 0.7740112994350282
+    },
+    {
+      "method": "LIME",
+      "score_fill": "silence",
+      "deletion_fill": "silence",
+      "group": "wrong",
+      "speech_share_k1": 0.34146341463414637,
+      "speech_share_k1to3": 0.5934959349593496
+    },
+    {
+      "method": "LIME",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "all",
+      "speech_share_k1": 0.43,
+      "speech_share_k1to3": 0.69
+    },
+    {
+      "method": "LIME",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "correct",
+      "speech_share_k1": 0.5254237288135594,
+      "speech_share_k1to3": 0.751412429378531
+    },
+    {
+      "method": "LIME",
+      "score_fill": "average",
+      "deletion_fill": "average",
+      "group": "wrong",
+      "speech_share_k1": 0.2926829268292683,
+      "speech_share_k1to3": 0.6016260162601627
+    },
+    {
+      "method": "LIME",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "all",
+      "speech_share_k1": 0.58,
+      "speech_share_k1to3": 0.7366666666666667
+    },
+    {
+      "method": "LIME",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "correct",
+      "speech_share_k1": 0.6101694915254238,
+      "speech_share_k1to3": 0.7570621468926554
+    },
+    {
+      "method": "LIME",
+      "score_fill": "room_noise",
+      "deletion_fill": "room_noise",
+      "group": "wrong",
+      "speech_share_k1": 0.5365853658536586,
+      "speech_share_k1to3": 0.7073170731707317
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "silence",
+      "group": "all",
+      "speech_share_k1": 0.717,
+      "speech_share_k1to3": 0.7166666666666667
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "silence",
+      "group": "correct",
+      "speech_share_k1": 0.7169491525423729,
+      "speech_share_k1to3": 0.7129943502824859
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "silence",
+      "group": "wrong",
+      "speech_share_k1": 0.7170731707317073,
+      "speech_share_k1to3": 0.7219512195121951
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "average",
+      "group": "all",
+      "speech_share_k1": 0.717,
+      "speech_share_k1to3": 0.7166666666666667
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "average",
+      "group": "correct",
+      "speech_share_k1": 0.7169491525423729,
+      "speech_share_k1to3": 0.7129943502824859
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "average",
+      "group": "wrong",
+      "speech_share_k1": 0.7170731707317073,
+      "speech_share_k1to3": 0.7219512195121951
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "room_noise",
+      "group": "all",
+      "speech_share_k1": 0.717,
+      "speech_share_k1to3": 0.7166666666666667
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "room_noise",
+      "group": "correct",
+      "speech_share_k1": 0.7169491525423729,
+      "speech_share_k1to3": 0.7129943502824859
+    },
+    {
+      "method": "random",
+      "score_fill": "",
+      "deletion_fill": "room_noise",
+      "group": "wrong",
+      "speech_share_k1": 0.7170731707317073,
+      "speech_share_k1to3": 0.7219512195121951
+    }
+  ],
+  "mean_curve": [
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 1,
+      "logit_drop": 0.7849999392032623,
+      "prob_drop": 0.10190756179353558
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 2,
+      "logit_drop": 2.3136766105890274,
+      "prob_drop": 0.3336678498660925
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 3,
+      "logit_drop": 3.3502353751659393,
+      "prob_drop": 0.4562281148183043
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 4,
+      "logit_drop": 3.853269830942154,
+      "prob_drop": 0.511664498906792
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 5,
+      "logit_drop": 4.490293204784393,
+      "prob_drop": 0.5936905108561494
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 6,
+      "logit_drop": 5.018697196787054,
+      "prob_drop": 0.6467153458055357
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 7,
+      "logit_drop": 5.342268929836598,
+      "prob_drop": 0.6596268003233805
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "average",
+      "k": 8,
+      "logit_drop": 5.6147339105606076,
+      "prob_drop": 0.6612541359672779
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 1,
+      "logit_drop": 0.7499688947200776,
+      "prob_drop": 0.12353449774114075
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 2,
+      "logit_drop": 2.0023420441150663,
+      "prob_drop": 0.3156284276483634
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 3,
+      "logit_drop": 2.9467934763431547,
+      "prob_drop": 0.4186916190057793
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 4,
+      "logit_drop": 3.474289492368698,
+      "prob_drop": 0.4780017938925185
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 5,
+      "logit_drop": 4.027707335948944,
+      "prob_drop": 0.5578189279410998
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 6,
+      "logit_drop": 4.500546481874254,
+      "prob_drop": 0.5909715054959985
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 7,
+      "logit_drop": 4.805549786445942,
+      "prob_drop": 0.6099886355496776
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "room_noise",
+      "k": 8,
+      "logit_drop": 5.168151084582011,
+      "prob_drop": 0.6190875073051287
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 1,
+      "logit_drop": 0.8759503328800201,
+      "prob_drop": 0.14185432571472256
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 2,
+      "logit_drop": 2.2274164187908174,
+      "prob_drop": 0.32579803872944363
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 3,
+      "logit_drop": 3.1350372898578645,
+      "prob_drop": 0.4257944794848417
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 4,
+      "logit_drop": 3.6809442055225374,
+      "prob_drop": 0.48994673322079807
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 5,
+      "logit_drop": 4.269588766098022,
+      "prob_drop": 0.5802276637862862
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 6,
+      "logit_drop": 4.649902660437305,
+      "prob_drop": 0.5979460130460558
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 7,
+      "logit_drop": 4.982801735401154,
+      "prob_drop": 0.6142668731526191
+    },
+    {
+      "label": "Grad-CAM",
+      "deletion_fill": "silence",
+      "k": 8,
+      "logit_drop": 5.373250594404008,
+      "prob_drop": 0.6327998390065209
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 1,
+      "logit_drop": 2.204763079881668,
+      "prob_drop": 0.33002128934104413
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 2,
+      "logit_drop": 3.1687056720256805,
+      "prob_drop": 0.4485057838367479
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 3,
+      "logit_drop": 3.9460537493228913,
+      "prob_drop": 0.5389086592887722
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 4,
+      "logit_drop": 4.48832696557045,
+      "prob_drop": 0.5917346712631629
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 5,
+      "logit_drop": 4.919885188341141,
+      "prob_drop": 0.627877618797585
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 6,
+      "logit_drop": 5.267931007375621,
+      "prob_drop": 0.6586740376570757
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 7,
+      "logit_drop": 5.347384237228556,
+      "prob_drop": 0.6567425021299732
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "average",
+      "k": 8,
+      "logit_drop": 5.596891343593597,
+      "prob_drop": 0.6680814197637747
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 1,
+      "logit_drop": 1.3300138306617737,
+      "prob_drop": 0.19115132090793888
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 2,
+      "logit_drop": 2.2620089638233183,
+      "prob_drop": 0.3275371917064622
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 3,
+      "logit_drop": 3.0963730955123903,
+      "prob_drop": 0.43287806954167435
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 4,
+      "logit_drop": 3.68549956202507,
+      "prob_drop": 0.5140577610372716
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 5,
+      "logit_drop": 4.162631695270538,
+      "prob_drop": 0.5733558979207262
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 6,
+      "logit_drop": 4.576751717413314,
+      "prob_drop": 0.6161674400577719
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 7,
+      "logit_drop": 4.738603146786385,
+      "prob_drop": 0.6217077141952363
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "room_noise",
+      "k": 8,
+      "logit_drop": 5.021458481417762,
+      "prob_drop": 0.6465224852901184
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 1,
+      "logit_drop": 1.7084576046466828,
+      "prob_drop": 0.27064286562892503
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 2,
+      "logit_drop": 2.6182341611385347,
+      "prob_drop": 0.39341473862100307
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 3,
+      "logit_drop": 3.1865990912914275,
+      "prob_drop": 0.4796989500240399
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 4,
+      "logit_drop": 3.867063429355621,
+      "prob_drop": 0.5347873368096252
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 5,
+      "logit_drop": 4.340349551439285,
+      "prob_drop": 0.5872407477420315
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 6,
+      "logit_drop": 4.743402961528663,
+      "prob_drop": 0.6194563563595251
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 7,
+      "logit_drop": 5.057073721226225,
+      "prob_drop": 0.6348625904994459
+    },
+    {
+      "label": "IG",
+      "deletion_fill": "silence",
+      "k": 8,
+      "logit_drop": 5.368649356895023,
+      "prob_drop": 0.6437576554750166
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 1,
+      "logit_drop": 2.4414740836620332,
+      "prob_drop": 0.3717602751865245
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 2,
+      "logit_drop": 3.6805175483226775,
+      "prob_drop": 0.5136474435978018
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 3,
+      "logit_drop": 4.545702918767929,
+      "prob_drop": 0.5844455464653157
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 4,
+      "logit_drop": 5.252606772184372,
+      "prob_drop": 0.6579547843224002
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 5,
+      "logit_drop": 5.631590522527695,
+      "prob_drop": 0.6739110569786022
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 6,
+      "logit_drop": 5.963794209740379,
+      "prob_drop": 0.7000807251982273
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 7,
+      "logit_drop": 6.175516672590946,
+      "prob_drop": 0.707097230132343
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "average",
+      "k": 8,
+      "logit_drop": 6.326256275177002,
+      "prob_drop": 0.7161575455135242
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 1,
+      "logit_drop": 1.7887217170000076,
+      "prob_drop": 0.26945475081966413
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 2,
+      "logit_drop": 3.1894660568237305,
+      "prob_drop": 0.46641200502095764
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 3,
+      "logit_drop": 4.083650349378586,
+      "prob_drop": 0.5673012668141503
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 4,
+      "logit_drop": 4.665272804498673,
+      "prob_drop": 0.620567880437124
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 5,
+      "logit_drop": 5.053267598152161,
+      "prob_drop": 0.6541501898843882
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 6,
+      "logit_drop": 5.442494760860097,
+      "prob_drop": 0.6821133066543619
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 7,
+      "logit_drop": 5.63393705829661,
+      "prob_drop": 0.6778903592611476
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "room_noise",
+      "k": 8,
+      "logit_drop": 5.904053158230251,
+      "prob_drop": 0.6975142098443228
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 1,
+      "logit_drop": 2.3480112195014953,
+      "prob_drop": 0.36293642171226537
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 2,
+      "logit_drop": 3.6930534064769747,
+      "prob_drop": 0.506493610578514
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 3,
+      "logit_drop": 4.425761162042618,
+      "prob_drop": 0.5844731751313414
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 4,
+      "logit_drop": 4.966289484500885,
+      "prob_drop": 0.622019877463
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 5,
+      "logit_drop": 5.335995715856552,
+      "prob_drop": 0.6486024029830397
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 6,
+      "logit_drop": 5.787554475996229,
+      "prob_drop": 0.6760698349237144
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 7,
+      "logit_drop": 5.912569563439551,
+      "prob_drop": 0.680479705402155
+    },
+    {
+      "label": "LIME",
+      "deletion_fill": "silence",
+      "k": 8,
+      "logit_drop": 6.104082152578566,
+      "prob_drop": 0.6843525836826884
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 1,
+      "logit_drop": 0.5253623193502426,
+      "prob_drop": 0.06859336033538423
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 2,
+      "logit_drop": 1.0584233830571175,
+      "prob_drop": 0.1372144912206535
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 3,
+      "logit_drop": 1.6610661237835884,
+      "prob_drop": 0.21261774791598384
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 4,
+      "logit_drop": 2.277223268866539,
+      "prob_drop": 0.30037735184923914
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 5,
+      "logit_drop": 2.8266359437704085,
+      "prob_drop": 0.3641703543706907
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 6,
+      "logit_drop": 3.3122737487157186,
+      "prob_drop": 0.4227467267735512
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 7,
+      "logit_drop": 3.6320244653427856,
+      "prob_drop": 0.45589568538436803
+    },
+    {
+      "label": "random",
+      "deletion_fill": "average",
+      "k": 8,
+      "logit_drop": 3.9824312996202047,
+      "prob_drop": 0.4798900018552786
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 1,
+      "logit_drop": 0.35783748787641523,
+      "prob_drop": 0.05883557441772444
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 2,
+      "logit_drop": 0.7774549531936645,
+      "prob_drop": 0.12305626494411842
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 3,
+      "logit_drop": 1.2345279676318168,
+      "prob_drop": 0.1881112726911983
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 4,
+      "logit_drop": 1.7329947597384452,
+      "prob_drop": 0.26128293011185266
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 5,
+      "logit_drop": 2.2216326555013657,
+      "prob_drop": 0.32859913450397854
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 6,
+      "logit_drop": 2.7235893825087882,
+      "prob_drop": 0.39182977081495673
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 7,
+      "logit_drop": 3.0133161860577604,
+      "prob_drop": 0.4139250844457487
+    },
+    {
+      "label": "random",
+      "deletion_fill": "room_noise",
+      "k": 8,
+      "logit_drop": 3.4164579888184865,
+      "prob_drop": 0.43777942695064653
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 0,
+      "logit_drop": 0.0,
+      "prob_drop": 0.0
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 1,
+      "logit_drop": 0.42440811121463773,
+      "prob_drop": 0.07559048894859868
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 2,
+      "logit_drop": 0.9402748717069626,
+      "prob_drop": 0.16697210196548995
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 3,
+      "logit_drop": 1.4753774995207787,
+      "prob_drop": 0.2602393006344028
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 4,
+      "logit_drop": 1.9927983406186103,
+      "prob_drop": 0.3417185211571327
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 5,
+      "logit_drop": 2.5057202691435814,
+      "prob_drop": 0.4035803788020901
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 6,
+      "logit_drop": 3.0151274600414313,
+      "prob_drop": 0.4617390628982492
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 7,
+      "logit_drop": 3.3060420139038817,
+      "prob_drop": 0.47438175008141564
+    },
+    {
+      "label": "random",
+      "deletion_fill": "silence",
+      "k": 8,
+      "logit_drop": 3.7064735380808513,
+      "prob_drop": 0.49269130488358315
+    }
+  ],
+  "resnet_on_these_clips": {
+    "accuracy": 0.59,
+    "macro_f1": 0.5687526309804305,
+    "per_class": {
+      "confused": {
+        "precision": 1.0,
+        "recall": 0.2,
+        "f1": 0.3333333333333333,
+        "support": 15
+      },
+      "default": {
+        "precision": 0.41935483870967744,
+        "recall": 0.8666666666666667,
+        "f1": 0.5652173913043478,
+        "support": 15
+      },
+      "enunciated": {
+        "precision": 0.4117647058823529,
+        "recall": 0.5,
+        "f1": 0.45161290322580644,
+        "support": 14
+      },
+      "happy": {
+        "precision": 0.6,
+        "recall": 0.21428571428571427,
+        "f1": 0.3157894736842105,
+        "support": 14
+      },
+      "laughing": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "support": 14
+      },
+      "sad": {
+        "precision": 0.5217391304347826,
+        "recall": 0.8571428571428571,
+        "f1": 0.6486486486486487,
+        "support": 14
+      },
+      "whisper": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 14
+      }
+    },
+    "confusion_counts": [
+      [
+        3,
+        3,
+        6,
+        1,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        13,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        3,
+        7,
+        0,
+        0,
+        4,
+        0
+      ],
+      [
+        0,
+        9,
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        2,
+        1,
+        1,
+        7,
+        3,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        14
+      ]
+    ],
+    "confusion_row_normalised": [
+      [
+        0.2,
+        0.2,
+        0.4,
+        0.0667,
+        0.0,
+        0.1333,
+        0.0
+      ],
+      [
+        0.0,
+        0.8667,
+        0.0,
+        0.0,
+        0.0,
+        0.1333,
+        0.0
+      ],
+      [
+        0.0,
+        0.2143,
+        0.5,
+        0.0,
+        0.0,
+        0.2857,
+        0.0
+      ],
+      [
+        0.0,
+        0.6429,
+        0.1429,
+        0.2143,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.1429,
+        0.0714,
+        0.0714,
+        0.5,
+        0.2143,
+        0.0
+      ],
+      [
+        0.0,
+        0.0714,
+        0.0714,
+        0.0,
+        0.0,
+        0.8571,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  }
+}
