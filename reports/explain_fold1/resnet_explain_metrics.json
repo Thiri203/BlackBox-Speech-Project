@@ -1,0 +1,657 @@
+{
+  "run": "fold1_seed1_pretrained",
+  "n_clips": 100,
+  "agree_with_saved_amp_predictions": 1.0,
+  "energy_threshold_db": -55.576020299999996,
+  "gradcam_layer": "layer4",
+  "gradcam_map_shape": [
+    4,
+    13
+  ],
+  "gradcam_all_zero_clips": 0,
+  "fills_db": {
+    "room_noise": -78.228271484375,
+    "average": -45.7443022265625,
+    "silence": -100.0
+  },
+  "ig_completeness": {
+    "silence": {
+      "abs_gap_mean": 0.04067806762773703,
+      "abs_gap_max": 0.13981265814675226,
+      "rel_gap_median": 0.006303138878929367,
+      "rel_gap_max": 0.0460665823982033,
+      "abs_logit_change_mean": 5.745701517537237
+    },
+    "average": {
+      "abs_gap_mean": 0.034764917949941146,
+      "abs_gap_max": 0.12851035610533046,
+      "rel_gap_median": 0.005187222441960737,
+      "rel_gap_max": 0.04344023859796786,
+      "abs_logit_change_mean": 5.804811903024092
+    },
+    "room_noise": {
+      "abs_gap_mean": 0.03663755748680206,
+      "abs_gap_max": 0.12460161123615876,
+      "rel_gap_median": 0.005971986285814436,
+      "rel_gap_max": 0.06498534939902147,
+      "abs_logit_change_mean": 5.601746193915606
+    }
+  },
+  "ig_vs_captum": {
+    "kendall_tau_min": 0.9999999999999998,
+    "kendall_tau_mean": 1.0,
+    "same_top_segment_share": 1.0,
+    "max_abs_diff": 0.009792495646252064
+  },
+  "lime_r2_mean": {
+    "silence": 0.7254827300493584,
+    "average": 0.8700766477703606,
+    "room_noise": 0.7770818892049008
+  },
+  "names": [
+    "Grad-CAM",
+    "IG silence",
+    "IG average",
+    "IG room noise",
+    "LIME silence",
+    "LIME average",
+    "LIME room noise"
+  ],
+  "top1_agreement": [
+    [
+      1.0,
+      0.21,
+      0.13,
+      0.22,
+      0.18,
+      0.17,
+      0.24
+    ],
+    [
+      0.21,
+      1.0,
+      0.49,
+      0.74,
+      0.49,
+      0.46,
+      0.43
+    ],
+    [
+      0.13,
+      0.49,
+      1.0,
+      0.57,
+      0.54,
+      0.59,
+      0.52
+    ],
+    [
+      0.22,
+      0.74,
+      0.57,
+      1.0,
+      0.5,
+      0.48,
+      0.48
+    ],
+    [
+      0.18,
+      0.49,
+      0.54,
+      0.5,
+      1.0,
+      0.73,
+      0.69
+    ],
+    [
+      0.17,
+      0.46,
+      0.59,
+      0.48,
+      0.73,
+      1.0,
+      0.67
+    ],
+    [
+      0.24,
+      0.43,
+      0.52,
+      0.48,
+      0.69,
+      0.67,
+      1.0
+    ]
+  ],
+  "top3_overlap": [
+    [
+      1.0,
+      0.41666666666666674,
+      0.44,
+      0.4599999999999999,
+      0.5166666666666666,
+      0.4899999999999999,
+      0.5133333333333333
+    ],
+    [
+      0.41666666666666674,
+      1.0,
+      0.5599999999999999,
+      0.7166666666666669,
+      0.45,
+      0.5133333333333332,
+      0.48999999999999994
+    ],
+    [
+      0.44,
+      0.5599999999999999,
+      1.0,
+      0.6866666666666665,
+      0.5133333333333332,
+      0.5966666666666667,
+      0.5566666666666665
+    ],
+    [
+      0.4599999999999999,
+      0.7166666666666669,
+      0.6866666666666665,
+      1.0,
+      0.5199999999999999,
+      0.5866666666666667,
+      0.5599999999999999
+    ],
+    [
+      0.5166666666666666,
+      0.45,
+      0.5133333333333332,
+      0.5199999999999999,
+      1.0,
+      0.7166666666666667,
+      0.7366666666666667
+    ],
+    [
+      0.4899999999999999,
+      0.5133333333333332,
+      0.5966666666666667,
+      0.5866666666666667,
+      0.7166666666666667,
+      1.0,
+      0.7633333333333334
+    ],
+    [
+      0.5133333333333333,
+      0.48999999999999994,
+      0.5566666666666665,
+      0.5599999999999999,
+      0.7366666666666667,
+      0.7633333333333334,
+      1.0
+    ]
+  ],
+  "speech_pause": [
+    {
+      "explanation": "Grad-CAM",
+      "speech_share_all": 0.7666666666666667,
+      "speech_share_correct": 0.7853107344632768,
+      "speech_share_wrong": 0.7398373983739838,
+      "top1_speech_share": 0.92
+    },
+    {
+      "explanation": "IG silence",
+      "speech_share_all": 0.7366666666666667,
+      "speech_share_correct": 0.7740112994350282,
+      "speech_share_wrong": 0.6829268292682927,
+      "top1_speech_share": 0.58
+    },
+    {
+      "explanation": "IG average",
+      "speech_share_all": 0.6766666666666666,
+      "speech_share_correct": 0.6949152542372882,
+      "speech_share_wrong": 0.6504065040650406,
+      "top1_speech_share": 0.4
+    },
+    {
+      "explanation": "IG room noise",
+      "speech_share_all": 0.7366666666666667,
+      "speech_share_correct": 0.7627118644067796,
+      "speech_share_wrong": 0.6991869918699187,
+      "top1_speech_share": 0.53
+    },
+    {
+      "explanation": "LIME silence",
+      "speech_share_all": 0.7,
+      "speech_share_correct": 0.7740112994350282,
+      "speech_share_wrong": 0.5934959349593496,
+      "top1_speech_share": 0.51
+    },
+    {
+      "explanation": "LIME average",
+      "speech_share_all": 0.69,
+      "speech_share_correct": 0.751412429378531,
+      "speech_share_wrong": 0.6016260162601627,
+      "top1_speech_share": 0.43
+    },
+    {
+      "explanation": "LIME room noise",
+      "speech_share_all": 0.7366666666666667,
+      "speech_share_correct": 0.7570621468926554,
+      "speech_share_wrong": 0.7073170731707317,
+      "top1_speech_share": 0.58
+    }
+  ],
+  "base_speech_share_real_segments": 0.7249378624689312,
+  "base_speech_share_correct": 0.7270194986072424,
+  "base_speech_share_wrong": 0.721881390593047,
+  "n_correct": 59,
+  "resnet_on_these_clips": {
+    "accuracy": 0.59,
+    "macro_f1": 0.5687526309804305,
+    "per_class": {
+      "confused": {
+        "precision": 1.0,
+        "recall": 0.2,
+        "f1": 0.3333333333333333,
+        "support": 15
+      },
+      "default": {
+        "precision": 0.41935483870967744,
+        "recall": 0.8666666666666667,
+        "f1": 0.5652173913043478,
+        "support": 15
+      },
+      "enunciated": {
+        "precision": 0.4117647058823529,
+        "recall": 0.5,
+        "f1": 0.45161290322580644,
+        "support": 14
+      },
+      "happy": {
+        "precision": 0.6,
+        "recall": 0.21428571428571427,
+        "f1": 0.3157894736842105,
+        "support": 14
+      },
+      "laughing": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "support": 14
+      },
+      "sad": {
+        "precision": 0.5217391304347826,
+        "recall": 0.8571428571428571,
+        "f1": 0.6486486486486487,
+        "support": 14
+      },
+      "whisper": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 14
+      }
+    },
+    "confusion_counts": [
+      [
+        3,
+        3,
+        6,
+        1,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        13,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        3,
+        7,
+        0,
+        0,
+        4,
+        0
+      ],
+      [
+        0,
+        9,
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        2,
+        1,
+        1,
+        7,
+        3,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        14
+      ]
+    ],
+    "confusion_row_normalised": [
+      [
+        0.2,
+        0.2,
+        0.4,
+        0.0667,
+        0.0,
+        0.1333,
+        0.0
+      ],
+      [
+        0.0,
+        0.8667,
+        0.0,
+        0.0,
+        0.0,
+        0.1333,
+        0.0
+      ],
+      [
+        0.0,
+        0.2143,
+        0.5,
+        0.0,
+        0.0,
+        0.2857,
+        0.0
+      ],
+      [
+        0.0,
+        0.6429,
+        0.1429,
+        0.2143,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.1429,
+        0.0714,
+        0.0714,
+        0.5,
+        0.2143,
+        0.0
+      ],
+      [
+        0.0,
+        0.0714,
+        0.0714,
+        0.0,
+        0.0,
+        0.8571,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "top1_position": {
+    "GradCAM/none": {
+      "all": {
+        "n": 100,
+        "first_speech": 0.0,
+        "first_pause": 0.02,
+        "middle_speech": 0.92,
+        "middle_pause": 0.05,
+        "last_speech": 0.0,
+        "last_pause": 0.01
+      },
+      "correct": {
+        "n": 59,
+        "first_speech": 0.0,
+        "first_pause": 0.01694915254237288,
+        "middle_speech": 0.8983050847457628,
+        "middle_pause": 0.06779661016949153,
+        "last_speech": 0.0,
+        "last_pause": 0.01694915254237288
+      },
+      "wrong": {
+        "n": 41,
+        "first_speech": 0.0,
+        "first_pause": 0.024390243902439025,
+        "middle_speech": 0.9512195121951219,
+        "middle_pause": 0.024390243902439025,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      }
+    },
+    "IG/silence": {
+      "all": {
+        "n": 100,
+        "first_speech": 0.0,
+        "first_pause": 0.39,
+        "middle_speech": 0.58,
+        "middle_pause": 0.02,
+        "last_speech": 0.0,
+        "last_pause": 0.01
+      },
+      "correct": {
+        "n": 59,
+        "first_speech": 0.0,
+        "first_pause": 0.288135593220339,
+        "middle_speech": 0.6610169491525424,
+        "middle_pause": 0.03389830508474576,
+        "last_speech": 0.0,
+        "last_pause": 0.01694915254237288
+      },
+      "wrong": {
+        "n": 41,
+        "first_speech": 0.0,
+        "first_pause": 0.5365853658536586,
+        "middle_speech": 0.4634146341463415,
+        "middle_pause": 0.0,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      }
+    },
+    "IG/average": {
+      "all": {
+        "n": 100,
+        "first_speech": 0.06,
+        "first_pause": 0.55,
+        "middle_speech": 0.34,
+        "middle_pause": 0.02,
+        "last_speech": 0.0,
+        "last_pause": 0.03
+      },
+      "correct": {
+        "n": 59,
+        "first_speech": 0.1016949152542373,
+        "first_pause": 0.4915254237288136,
+        "middle_speech": 0.3389830508474576,
+        "middle_pause": 0.01694915254237288,
+        "last_speech": 0.0,
+        "last_pause": 0.05084745762711865
+      },
+      "wrong": {
+        "n": 41,
+        "first_speech": 0.0,
+        "first_pause": 0.6341463414634146,
+        "middle_speech": 0.34146341463414637,
+        "middle_pause": 0.024390243902439025,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      }
+    },
+    "IG/room_noise": {
+      "all": {
+        "n": 100,
+        "first_speech": 0.0,
+        "first_pause": 0.44,
+        "middle_speech": 0.53,
+        "middle_pause": 0.02,
+        "last_speech": 0.0,
+        "last_pause": 0.01
+      },
+      "correct": {
+        "n": 59,
+        "first_speech": 0.0,
+        "first_pause": 0.3559322033898305,
+        "middle_speech": 0.5932203389830508,
+        "middle_pause": 0.03389830508474576,
+        "last_speech": 0.0,
+        "last_pause": 0.01694915254237288
+      },
+      "wrong": {
+        "n": 41,
+        "first_speech": 0.0,
+        "first_pause": 0.5609756097560976,
+        "middle_speech": 0.43902439024390244,
+        "middle_pause": 0.0,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      }
+    },
+    "LIME/silence": {
+      "all": {
+        "n": 100,
+        "first_speech": 0.01,
+        "first_pause": 0.46,
+        "middle_speech": 0.5,
+        "middle_pause": 0.02,
+        "last_speech": 0.0,
+        "last_pause": 0.01
+      },
+      "correct": {
+        "n": 59,
+        "first_speech": 0.01694915254237288,
+        "first_pause": 0.3559322033898305,
+        "middle_speech": 0.6101694915254238,
+        "middle_pause": 0.01694915254237288,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      },
+      "wrong": {
+        "n": 41,
+        "first_speech": 0.0,
+        "first_pause": 0.6097560975609756,
+        "middle_speech": 0.34146341463414637,
+        "middle_pause": 0.024390243902439025,
+        "last_speech": 0.0,
+        "last_pause": 0.024390243902439025
+      }
+    },
+    "LIME/average": {
+      "all": {
+        "n": 100,
+        "first_speech": 0.03,
+        "first_pause": 0.52,
+        "middle_speech": 0.4,
+        "middle_pause": 0.04,
+        "last_speech": 0.0,
+        "last_pause": 0.01
+      },
+      "correct": {
+        "n": 59,
+        "first_speech": 0.05084745762711865,
+        "first_pause": 0.423728813559322,
+        "middle_speech": 0.4745762711864407,
+        "middle_pause": 0.03389830508474576,
+        "last_speech": 0.0,
+        "last_pause": 0.01694915254237288
+      },
+      "wrong": {
+        "n": 41,
+        "first_speech": 0.0,
+        "first_pause": 0.6585365853658537,
+        "middle_speech": 0.2926829268292683,
+        "middle_pause": 0.04878048780487805,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      }
+    },
+    "LIME/room_noise": {
+      "all": {
+        "n": 100,
+        "first_speech": 0.01,
+        "first_pause": 0.39,
+        "middle_speech": 0.57,
+        "middle_pause": 0.03,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      },
+      "correct": {
+        "n": 59,
+        "first_speech": 0.01694915254237288,
+        "first_pause": 0.3728813559322034,
+        "middle_speech": 0.5932203389830508,
+        "middle_pause": 0.01694915254237288,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      },
+      "wrong": {
+        "n": 41,
+        "first_speech": 0.0,
+        "first_pause": 0.4146341463414634,
+        "middle_speech": 0.5365853658536586,
+        "middle_pause": 0.04878048780487805,
+        "last_speech": 0.0,
+        "last_pause": 0.0
+      }
+    },
+    "random_segment": {
+      "all": {
+        "n": 100,
+        "first_speech": 0.006619560994560994,
+        "first_pause": 0.08423359973359973,
+        "middle_speech": 0.6932560633810634,
+        "middle_pause": 0.12503761516261516,
+        "last_speech": 0.013125,
+        "last_pause": 0.07772816072816072
+      },
+      "correct": {
+        "n": 59,
+        "first_speech": 0.011219594906035585,
+        "first_pause": 0.07883075022905531,
+        "middle_speech": 0.6900494514901295,
+        "middle_pause": 0.12984985823968873,
+        "last_speech": 0.012711864406779662,
+        "last_pause": 0.07733848072831122
+      },
+      "wrong": {
+        "n": 41,
+        "first_speech": 0.0,
+        "first_pause": 0.09200843194745632,
+        "middle_speech": 0.6978704561021634,
+        "middle_pause": 0.11811268000292391,
+        "last_speech": 0.013719512195121951,
+        "last_pause": 0.07828891975233437
+      }
+    }
+  }
+}
