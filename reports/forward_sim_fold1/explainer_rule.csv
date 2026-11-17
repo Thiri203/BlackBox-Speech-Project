@@ -1,0 +1,4 @@
+explainer,score_fill,deletion_gain,deletion_n_clips,tau_repeats,tau_noise_40db,n_noise_40db,tau_gain_plus_1db,n_gain_plus_1db,tau_gain_minus_1db,n_gain_minus_1db,stability,rank_deletion,rank_stability,average_rank
+GradCAM,none,1.5036,100,1.0000,0.7596,16,0.9842,43,0.9753,41,0.9298,3.0000,1.0000,2.0000
+IG,room_noise,1.6589,100,0.8263,0.6234,16,0.9715,43,0.9617,41,0.8457,2.0000,3.0000,2.5000
+LIME,room_noise,2.5145,100,0.8922,0.6940,16,0.9745,43,0.9756,41,0.8841,1.0000,2.0000,1.5000

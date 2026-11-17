@@ -1,0 +1,21 @@
+set,condition,item,item_id,audio,image,clip_id,true_style,model_prediction,model_correct,top3_segments,top3_times_s,duration_s
+1,audio_only,1,16263887,audio/a353293d.wav,,ex02_whisper_00006,whisper,whisper,True,1 0 2,0.25-0.50 0.00-0.25 0.50-0.75,4.0
+1,audio_only,2,e9c7df91,audio/4d3363d3.wav,,ex02_sad_00260,sad,sad,True,0 1 2,0.00-0.25 0.25-0.50 0.50-0.75,4.0
+1,audio_only,3,d0f21a7b,audio/30f44356.wav,,ex02_laughing_00306,laughing,laughing,True,0 12 4,0.00-0.25 3.00-3.25 1.00-1.25,4.0
+1,audio_only,4,55142868,audio/cb22fdfb.wav,,ex02_confused_00374,confused,enunciated,False,4 7 11,1.00-1.25 1.75-2.00 2.75-3.00,4.0
+1,audio_only,5,81b75e7a,audio/2e801008.wav,,ex02_whisper_00054,whisper,whisper,True,1 0 8,0.25-0.50 0.00-0.25 2.00-2.25,2.412
+1,audio_only,6,d70f8e30,audio/c4db6b3b.wav,,ex02_confused_00239,confused,default,False,0 1 9,0.00-0.25 0.25-0.50 2.25-2.50,3.21
+1,audio_only,7,6bd08051,audio/eb87e2b6.wav,,ex02_enunciated_00299,enunciated,sad,False,0 5 3,0.00-0.25 1.25-1.50 0.75-1.00,2.835
+1,audio_only,8,102e4ce3,audio/fe619bb0.wav,,ex02_enunciated_00358,enunciated,enunciated,True,0 1 11,0.00-0.25 0.25-0.50 2.75-3.00,4.0
+1,audio_only,9,e558e60a,audio/97080b0a.wav,,ex02_default_00265,default,default,True,0 5 1,0.00-0.25 1.25-1.50 0.25-0.50,1.606
+1,audio_only,10,5868004f,audio/3ef72585.wav,,ex02_happy_00125,happy,enunciated,False,12 2 6,3.00-3.25 0.50-0.75 1.50-1.75,3.536
+2,audio_plus_highlights,1,04b269f7,audio/d3f945d2.wav,img/d3f945d2.png,ex02_happy_00006,happy,default,False,0 10 9,0.00-0.25 2.50-2.75 2.25-2.50,3.005
+2,audio_plus_highlights,2,cb3ccba6,audio/0a8ade3d.wav,img/0a8ade3d.png,ex02_sad_00337,sad,sad,True,0 7 11,0.00-0.25 1.75-2.00 2.75-3.00,3.182
+2,audio_plus_highlights,3,730c363e,audio/93d3bf8d.wav,img/93d3bf8d.png,ex02_sad_00062,sad,sad,True,0 1 12,0.00-0.25 0.25-0.50 3.00-3.25,4.0
+2,audio_plus_highlights,4,0a969922,audio/a3a5b300.wav,img/a3a5b300.png,ex02_default_00362,default,default,True,0 1 4,0.00-0.25 0.25-0.50 1.00-1.25,2.15
+2,audio_plus_highlights,5,42d7bd56,audio/d29e1aba.wav,img/d29e1aba.png,ex02_confused_00119,confused,confused,True,2 4 7,0.50-0.75 1.00-1.25 1.75-2.00,2.364
+2,audio_plus_highlights,6,34af3925,audio/c01506d0.wav,img/c01506d0.png,ex02_default_00068,default,sad,False,0 2 1,0.00-0.25 0.50-0.75 0.25-0.50,2.566
+2,audio_plus_highlights,7,34db45cd,audio/67887bf5.wav,img/67887bf5.png,ex02_laughing_00326,laughing,default,False,0 1 7,0.00-0.25 0.25-0.50 1.75-2.00,4.0
+2,audio_plus_highlights,8,1fcabf78,audio/e71206fb.wav,img/e71206fb.png,ex02_whisper_00100,whisper,whisper,True,1 0 2,0.25-0.50 0.00-0.25 0.50-0.75,3.002
+2,audio_plus_highlights,9,d2c2db66,audio/a1fc3e59.wav,img/a1fc3e59.png,ex02_enunciated_00265,enunciated,default,False,7 0 1,1.75-2.00 0.00-0.25 0.25-0.50,2.133
+2,audio_plus_highlights,10,77b24397,audio/746bb98f.wav,img/746bb98f.png,ex02_happy_00200,happy,happy,True,1 0 6,0.25-0.50 0.00-0.25 1.50-1.75,2.102

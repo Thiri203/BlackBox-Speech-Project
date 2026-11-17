@@ -1,0 +1,4 @@
+explainer,rank_repeats,rank_noise_40db,rank_gain_plus_1db,rank_gain_minus_1db,avg_rank_using_repeats_only,avg_rank_using_noise_40db_only,avg_rank_using_gain_plus_1db_only,avg_rank_using_gain_minus_1db_only
+GradCAM,1.0,1.0,1.0,2.0,2.0,2.0,2.0,2.5
+IG,3.0,3.0,3.0,3.0,2.5,2.5,2.5,2.5
+LIME,2.0,2.0,2.0,1.0,1.5,1.5,1.5,1.0

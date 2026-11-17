@@ -54,3 +54,10 @@ Thumbs.db
 # *.wav above already covers it, listed here explicitly)
 reports/counterfactual_fold1/listening/audio/
 reports/counterfactual_fold1/self_check/
+
+# Forward-simulation study: participant audio and spectrogram pictures (rebuilt by src.explain.forward_sim);
+# participants' result files and their scored output
+reports/forward_sim_fold1/participant_bundle/audio/
+reports/forward_sim_fold1/participant_bundle/img/
+reports/forward_sim_fold1/results/
+forward_sim_*.csv
