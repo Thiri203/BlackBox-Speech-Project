@@ -1,0 +1,42 @@
+clip_id,style,pred_unedited,reached_true_style,edits_reaching_true,labels_reached
+ex02_confused_00034,confused,happy,True,rate_x0.90 rate_x1.10 rate_x0.85,confused default
+ex02_confused_00057,confused,enunciated,True,rate_x1.10 rate_x0.85 rate_x1.15 gain_-3dB gain_-6dB,confused
+ex02_confused_00111,confused,sad,False,,
+ex02_confused_00196,confused,enunciated,True,rate_x0.90 rate_x1.10 rate_x0.85 rate_x1.15,confused
+ex02_confused_00239,confused,default,True,rate_x0.85,confused
+ex02_confused_00251,confused,enunciated,True,gain_-3dB,confused
+ex02_confused_00262,confused,sad,True,gain_-6dB,confused
+ex02_confused_00269,confused,enunciated,True,rate_x1.10 rate_x0.85 rate_x1.15,confused
+ex02_confused_00333,confused,default,False,,
+ex02_confused_00356,confused,enunciated,True,rate_x0.90 rate_x1.10,confused sad
+ex02_confused_00374,confused,enunciated,True,rate_x0.90 rate_x1.10 rate_x0.85 rate_x1.15,confused
+ex02_confused_00377,confused,default,False,,sad
+ex02_default_00068,default,sad,True,rate_x1.10 rate_x1.15,default
+ex02_default_00110,default,sad,True,rate_x1.15,default
+ex02_enunciated_00096,enunciated,sad,True,rate_x0.90,confused default enunciated
+ex02_enunciated_00167,enunciated,sad,True,rate_x0.85,confused default enunciated
+ex02_enunciated_00171,enunciated,default,True,rate_x0.90 rate_x0.85 gain_-6dB,enunciated
+ex02_enunciated_00265,enunciated,default,True,rate_x0.90 rate_x0.85 gain_-6dB gain_+6dB,enunciated
+ex02_enunciated_00299,enunciated,sad,False,,confused default
+ex02_enunciated_00313,enunciated,default,True,rate_x0.90 rate_x0.85,enunciated
+ex02_enunciated_00325,enunciated,sad,True,gain_-6dB pause_x1.5,default enunciated
+ex02_happy_00006,happy,default,True,gain_-6dB,happy
+ex02_happy_00028,happy,default,True,gain_-3dB gain_-6dB,happy laughing
+ex02_happy_00094,happy,default,False,,confused sad
+ex02_happy_00121,happy,default,False,,confused
+ex02_happy_00125,happy,enunciated,False,,confused default
+ex02_happy_00126,happy,default,False,,confused
+ex02_happy_00213,happy,default,False,,confused enunciated laughing
+ex02_happy_00219,happy,enunciated,True,rate_x1.10 rate_x1.15 gain_-3dB gain_-6dB pause_x1.5,default happy
+ex02_happy_00228,happy,default,False,,confused
+ex02_happy_00265,happy,default,True,gain_-6dB,happy
+ex02_happy_00301,happy,default,True,rate_x0.90 rate_x1.10 rate_x0.85 rate_x1.15 gain_-3dB gain_-6dB,happy sad
+ex02_laughing_00042,laughing,sad,True,rate_x1.10 rate_x1.15 gain_-6dB,laughing
+ex02_laughing_00052,laughing,sad,False,,enunciated happy
+ex02_laughing_00070,laughing,enunciated,True,rate_x0.90 rate_x1.10 rate_x0.85 rate_x1.15 gain_-3dB gain_-6dB pause_x0.5 pause_x1.5,laughing
+ex02_laughing_00096,laughing,happy,False,,sad
+ex02_laughing_00286,laughing,default,True,rate_x0.90 rate_x1.10 pause_x1.5,happy laughing sad
+ex02_laughing_00297,laughing,sad,True,rate_x1.10,happy laughing
+ex02_laughing_00326,laughing,default,False,,enunciated happy
+ex02_sad_00096,sad,enunciated,True,rate_x0.90 rate_x1.10 rate_x0.85 rate_x1.15 gain_+3dB gain_+6dB pause_x0.5,confused sad
+ex02_sad_00352,sad,default,True,rate_x0.90 rate_x1.10,confused sad

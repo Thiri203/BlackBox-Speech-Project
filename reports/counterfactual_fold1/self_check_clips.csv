@@ -1,0 +1,7 @@
+edit,clip_id,style,model_unedited,model_edited,flipped,n_internal_pauses,pause_s_in_window,files
+rate_x0.85,ex02_sad_00105,sad,sad,sad,False,2,0.370,"ex02_sad_00105_original.wav, ex02_sad_00105_rate_x0.85.wav"
+rate_x1.15,ex02_default_00148,default,default,confused,True,1,0.560,"ex02_default_00148_original.wav, ex02_default_00148_rate_x1.15.wav"
+pause_x0.5,ex02_enunciated_00182,enunciated,enunciated,enunciated,False,2,1.230,"ex02_enunciated_00182_original.wav, ex02_enunciated_00182_pause_x0.5.wav"
+pause_x1.5,ex02_laughing_00052,laughing,sad,sad,False,4,1.225,"ex02_laughing_00052_original.wav, ex02_laughing_00052_pause_x1.5.wav"
+gain_-6dB,ex02_whisper_00006,whisper,whisper,whisper,False,2,0.390,"ex02_whisper_00006_original.wav, ex02_whisper_00006_gain_-6dB.wav"
+gain_+6dB,ex02_confused_00246,confused,confused,enunciated,True,0,0.000,"ex02_confused_00246_original.wav, ex02_confused_00246_gain_+6dB.wav"

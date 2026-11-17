@@ -49,3 +49,8 @@ Thumbs.db
 
 # Page images from scripts/report_to_pdf.py --check (visual check only)
 *_pages/
+
+# Counterfactual edits: edited audio for the listening test and the self-check (never committed;
+# *.wav above already covers it, listed here explicitly)
+reports/counterfactual_fold1/listening/audio/
+reports/counterfactual_fold1/self_check/

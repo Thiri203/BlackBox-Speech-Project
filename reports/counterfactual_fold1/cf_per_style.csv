@@ -1,0 +1,8 @@
+style,clips,flip_any_edit,flip_rate,flip_gain,flip_pause,pred_unedited,reached_from_other_clips,reached_by,reached_from_styles,reachable
+confused,15,13,9,6,1,3,31,rate:42 gain:23 pause:1,default:14 enunciated:11 sad:4 happy:2,True
+default,15,14,13,8,0,31,16,rate:22 pause:4 gain:3,sad:7 enunciated:6 happy:2 confused:1,True
+enunciated,14,14,14,10,6,17,16,rate:14 gain:9 pause:1,default:8 sad:5 confused:2 happy:1,True
+happy,14,12,10,8,1,5,12,gain:17 rate:10 pause:4,default:7 sad:2 laughing:2 enunciated:1,True
+laughing,14,10,8,9,4,7,9,rate:17 gain:4 pause:3,default:5 sad:2 enunciated:1 happy:1,True
+sad,14,4,3,3,1,23,16,rate:30 gain:9 pause:5,default:8 enunciated:5 laughing:1 happy:1 confused:1,True
+whisper,14,0,0,0,0,14,0,,,False
