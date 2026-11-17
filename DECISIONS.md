@@ -127,6 +127,28 @@ Cropping is uneven: half of the enunciated clips are cut, but only 15% of defaul
 | B: validation actor = the training actor after the test actor in sorted order (wrapping): fold 0 -> ex02, fold 2 -> ex04 | A fixed rule decided before any B run. It uses no test result (choosing e.g. the "hardest" actor from earlier test scores would use test information). | `validation.val_actor_by_fold` |
 | B: normalisation mean/std recomputed from the 2 training actors only (same method as preprocessing: real frames only) | Keeps the validation actor out of the training statistics. The split used is saved as `split_used.csv` in the run folder. | (code, `fold_statistics`) |
 
+## Explanation phase: which fold and model are explained
+
+| Decision | Why | Where |
+|---|---|---|
+| The explainers (Grad-CAM, IG, LIME and the explanation tests) run on **one fold only: fold 1 (test actor ex02)**. The main model is the baseline pretrained ResNet-18 (no augmentation), **seed 1** (`models/fold1_seed1_pretrained/best.pt`). The accuracy table stays on all 4 folds. | Fold 1 has the highest ResNet test accuracy (68.6% seed 1, 67.8% seed 2; macro-F1 0.670 / 0.651), and the LR baseline is also strongest on ex02, so there are more correct predictions to explain. LR = Aung's logistic regression on the 88 eGeMAPS features, from his report of 12 Nov 2026 (his folds are numbered 1 to 4, ours 0 to 3, so our fold k is his fold k+1). Leave-one-actor-out accuracy: ex01 57.2%, ex02 65.7% (his fold 2, his highest), ex03 43.8%, ex04 64.2%; mean 57.7%, macro-F1 0.561. **Aung's numbers, not checked in this repository** (his code and features are not here). The length-only shortcut check is a different model (19.5% on ex02). | (this section) |
+
+## LRfS: white-box check for the explainers (fold 1), `src/train_lrfs.py`, `src/models/lrfs.py`
+
+From the final plan (point 2): a logistic regression whose segment contributions are exact; LIME and
+Integrated Gradients are scored against that truth with Kendall's tau in the same 16-segment space and
+with the same fill, ranking real segments only, reported for each of the three fills. Grad-CAM needs a
+convolutional layer and is covered by the sanity check instead. Not a competing classifier.
+
+| Decision | Why | Where |
+|---|---|---|
+| 16 features per clip: x_j = mean of the cached log-mel (dB) over all 128 bands and all 25 frames of segment j, padding counted at -100 dB (not the real-frame `mean_db` of `segments.csv`) | LRfS must be an exact linear function of the same 128 x 400 input the ResNet gets, so the same explainer code runs on both. `LRfSTorch` takes the standardised ResNet input and reproduces the logits (max difference 2.7e-7). | `segment_features`, `LRfSTorch` |
+| StandardScaler on the fold-1 train split; C from {0.001, 0.01, 0.1, 1, 10, 100} by validation macro-F1 (ties -> smaller C); test actor ex02 used once after C was fixed | Same discipline as the ResNet. Result: C = 1 (val macro-F1 0.289; all C between 0.272 and 0.289). | `C_GRID` |
+| Contributions for the **predicted class's logit**: phi_j = V_cj (x_j - f), V = weights with the scaler folded in | The ResNet explainers must explain the same quantity. Exact in logit space, not in probability space. | `contributions` |
+| Real segments only (`is_real_audio`; partly real counts as real, filling replaces all 25 frames); padding segments get phi = 0 | The plan ranks only segments with real audio. The exact-sum identity therefore holds over real segments only: sum of phi = logit(clip) - logit(every real segment filled). Checked by writing the fill into the spectrogram: max error 5e-12. | report |
+| Three fills, all from fold-1 training clips only; scalar f = mean over bands of the per-band fill: **room noise -78.23 dB (main)**, **average -45.74 dB (second)**, **silence -100 dB (comparison)** | The plan's three fills. **Silence is the padding value -100 dB.** The fill-values decision above does not forbid it; it records that -100 dB is "perfect silence" never seen inside real speech, which is why room noise is the main fill. Silence is kept because the plan asks for it and because a deletion that looks like padding is exactly where a length/padding shortcut would show. | `fill_values_fold_1.json` |
+| Result (fold 1, test ex02): accuracy 31.4%, macro-F1 0.279 (ResNet seed 1: 68.6% / 0.670; length only 19.5%; chance 14.3%). Whisper is recognised (recall 0.94), the other styles are weak. | A weak but exact model is fine for a white-box check; its weights concentrate on the first 1 to 2 segments, so the truth rankings are dominated by s0. | `reports/lrfs_fold1/report.md` |
+
 ## Reporting test results (standing rule, also in `CLAUDE.md`)
 
 | Decision | Why | Where |
