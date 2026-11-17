@@ -199,6 +199,26 @@ convolutional layer and is covered by the sanity check instead. Not a competing 
 | Reliability: 10 equal-width bins of the highest probability, all test clips pooled over the 4 actors, one curve per seed; ECE given only as a summary of the table | The user asked for a pooled 10-bin table / plot. | `reliability` |
 | **No temperature scaling or other calibration** | The question is how calibrated the model is as trained; fitting a temperature would need a calibration set and is a separate step. | (this table) |
 
+## Sanity check: model-parameter randomisation (fold 1, seed 1), `src/explain/run_sanity.py`
+
+Design fixed before any result. The final plan document is not in `docs/`; the task PDF (Step 6) says "we also
+randomize the model's weights, and the explanation should turn meaningless". Question: do the explanations depend
+on what the model learned?
+
+| Decision | Why | Where |
+|---|---|---|
+| `models/fold1_seed1_pretrained/best.pt` loaded as an in-memory copy, float32, eval mode; never written | The explained model; existing files (checkpoint, saved scores, reports, cache) are not changed. | `run_sanity.py` |
+| **Cascading randomisation, top down**, 7 stages: 0 original; 1 fc; 2 + layer4; 3 + layer3; 4 + layer2; 5 + layer1; 6 + conv1 and bn1 (fully random) | Standard model-randomisation test: destroy the learned weights from the output backwards and watch when the explanation stops matching. | `STAGES` |
+| Re-initialisation with PyTorch's default `reset_parameters()` per layer type (Conv2d, Linear, BatchNorm2d), `torch.manual_seed(42)` once, blocks processed in the fixed order fc, layer4, layer3, layer2, layer1, conv1/bn1; batch-norm: weight/bias AND running statistics reset | One seed and a fixed order make each stage's already-randomised blocks identical to the previous stage's (true cascade). Resetting the running statistics removes what batch-norm learned from the data. | `randomise` |
+| Same 100 clips (`clips_fold1.csv`), same fills (fold-1 train: room noise -78.23, average -45.74, silence -100 dB), same explainer code and settings (Grad-CAM layer4, IG 50 steps, LIME 500 samples, seeds as in the main run), real segments only | Only the weights change, so any change in the explanation comes from the weights. | `run_sanity.py` |
+| **Target = the ORIGINAL model's predicted class**, explained as its logit on every randomised model | Same quantity at every stage; a randomised model's own prediction would change the question. | (report) |
+| Compare each stage with the saved original (`resnet_segment_scores.csv`): Kendall tau-b on signed scores (main) and on absolute values, top-3 overlap (signed), share with the same top-1 segment; mean, median, min over clips per method and fill | The plan's ranking metrics, as in the white-box and stability steps. | `compare` |
+| Controls: (a) stage 0 rerun vs saved must give tau 1.000; (b) a second fully random model (seed 43) vs the seed-42 one, same target | (a) proves the pipeline reproduces the saved explanations; (b) shows how similar two meaningless explanations are by chance (structure from the input alone). | `run_sanity.py` |
+| Undefined tau (a score vector constant over the real segments, e.g. Grad-CAM all zero after ReLU): the clip is excluded from that mean and the number excluded is reported; never filled with 0 | A filled value would invent a result. | `compare` |
+| Fixed wording, by mean signed tau at stage 6: < 0.3 "changes strongly", 0.3 to 0.7 "partly changes", > 0.7 "barely changes"; no pass/fail threshold | Wording decided before the results; nothing tuned. | `wording` |
+| Model accuracy and macro-F1 at every stage on the 100 clips; confusion matrix and per-style metrics for the original and the fully random model | Shows the model is really destroyed (chance = 14.3%); CLAUDE.md rule. | report |
+| Outcome of control (a), reported as is: mean tau >= 0.999, same top-1 in 100% of clips, lowest single-clip tau 0.929 (IG). IG differs from the saved scores by up to 0.1% of its largest score (GPU gradient sums are not bit-reproducible), which swaps nearly tied segments; nothing was changed to force 1.000 | The saved run had the same non-determinism, so bit-exact reproduction is not possible; the control is the noise floor. | `reports/sanity_fold1/report.md` |
+
 ## Reporting test results (standing rule, also in `CLAUDE.md`)
 
 | Decision | Why | Where |
