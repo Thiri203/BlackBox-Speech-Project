@@ -1,0 +1,282 @@
+{
+  "fold": 1,
+  "n_clips": 100,
+  "seed": 42,
+  "ig_steps": 50,
+  "lime_samples": 500,
+  "fills_db": {
+    "room_noise": -78.228271484375,
+    "average": -45.7443022265625,
+    "silence": -100.0
+  },
+  "target": "LRfS predicted class logit",
+  "n_real_segments": {
+    "mean": 12.07,
+    "min": 5,
+    "max": 16
+  },
+  "summary": {
+    "room_noise/IG": {
+      "fill": "room_noise",
+      "method": "IG",
+      "n_clips": 100,
+      "tau_mean": 1.0,
+      "tau_median": 1.0,
+      "tau_min": 0.9999999999999998,
+      "tau_nan": 0,
+      "tau_abs_mean": 1.0,
+      "top3_mean": 1.0,
+      "top3_abs_mean": 1.0,
+      "top3_all_three_share": 1.0,
+      "ig_max_abs_completeness_gap": 1.8010204172469457e-06
+    },
+    "room_noise/LIME": {
+      "fill": "room_noise",
+      "method": "LIME",
+      "n_clips": 100,
+      "tau_mean": 0.9953447663447663,
+      "tau_median": 0.9999999999999999,
+      "tau_min": 0.9272727272727274,
+      "tau_nan": 0,
+      "tau_abs_mean": 0.9896338106338105,
+      "top3_mean": 0.9966666666666666,
+      "top3_abs_mean": 1.0,
+      "top3_all_three_share": 0.99,
+      "lime_r2_mean": 0.9997359712936045
+    },
+    "average/IG": {
+      "fill": "average",
+      "method": "IG",
+      "n_clips": 100,
+      "tau_mean": 1.0,
+      "tau_median": 1.0,
+      "tau_min": 0.9999999999999998,
+      "tau_nan": 0,
+      "tau_abs_mean": 1.0,
+      "top3_mean": 1.0,
+      "top3_abs_mean": 1.0,
+      "top3_all_three_share": 1.0,
+      "ig_max_abs_completeness_gap": 8.930234134396642e-07
+    },
+    "average/LIME": {
+      "fill": "average",
+      "method": "LIME",
+      "n_clips": 100,
+      "tau_mean": 0.9851305916305916,
+      "tau_median": 0.9999999999999999,
+      "tau_min": 0.846153846153846,
+      "tau_nan": 0,
+      "tau_abs_mean": 0.9691497391497391,
+      "top3_mean": 1.0,
+      "top3_abs_mean": 0.9933333333333333,
+      "top3_all_three_share": 1.0,
+      "lime_r2_mean": 0.9997351277451857
+    },
+    "silence/IG": {
+      "fill": "silence",
+      "method": "IG",
+      "n_clips": 100,
+      "tau_mean": 1.0,
+      "tau_median": 1.0,
+      "tau_min": 0.9999999999999998,
+      "tau_nan": 0,
+      "tau_abs_mean": 1.0,
+      "top3_mean": 1.0,
+      "top3_abs_mean": 1.0,
+      "top3_all_three_share": 1.0,
+      "ig_max_abs_completeness_gap": 1.0939895886963313e-06
+    },
+    "silence/LIME": {
+      "fill": "silence",
+      "method": "LIME",
+      "n_clips": 100,
+      "tau_mean": 0.9965937950937951,
+      "tau_median": 0.9999999999999999,
+      "tau_min": 0.9444444444444445,
+      "tau_nan": 0,
+      "tau_abs_mean": 0.9940079365079366,
+      "top3_mean": 0.9966666666666667,
+      "top3_abs_mean": 0.9966666666666666,
+      "top3_all_three_share": 0.99,
+      "lime_r2_mean": 0.9997329071991072
+    }
+  },
+  "lrfs_on_these_clips": {
+    "accuracy": 0.27,
+    "macro_f1": 0.23535242417784139,
+    "per_class": {
+      "confused": {
+        "precision": 0.2857142857142857,
+        "recall": 0.13333333333333333,
+        "f1": 0.18181818181818182,
+        "support": 15
+      },
+      "default": {
+        "precision": 0.11764705882352941,
+        "recall": 0.13333333333333333,
+        "f1": 0.125,
+        "support": 15
+      },
+      "enunciated": {
+        "precision": 0.2222222222222222,
+        "recall": 0.42857142857142855,
+        "f1": 0.2926829268292683,
+        "support": 14
+      },
+      "happy": {
+        "precision": 0.2,
+        "recall": 0.07142857142857142,
+        "f1": 0.10526315789473684,
+        "support": 14
+      },
+      "laughing": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 14
+      },
+      "sad": {
+        "precision": 0.2727272727272727,
+        "recall": 0.21428571428571427,
+        "f1": 0.24,
+        "support": 14
+      },
+      "whisper": {
+        "precision": 0.5652173913043478,
+        "recall": 0.9285714285714286,
+        "f1": 0.7027027027027027,
+        "support": 14
+      }
+    },
+    "confusion_counts": [
+      [
+        2,
+        2,
+        6,
+        1,
+        4,
+        0,
+        0
+      ],
+      [
+        0,
+        2,
+        6,
+        2,
+        2,
+        2,
+        1
+      ],
+      [
+        1,
+        2,
+        6,
+        0,
+        2,
+        1,
+        2
+      ],
+      [
+        1,
+        5,
+        3,
+        1,
+        0,
+        3,
+        1
+      ],
+      [
+        1,
+        2,
+        4,
+        0,
+        0,
+        2,
+        5
+      ],
+      [
+        2,
+        3,
+        2,
+        1,
+        2,
+        3,
+        1
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        13
+      ]
+    ],
+    "confusion_row_normalised": [
+      [
+        0.1333,
+        0.1333,
+        0.4,
+        0.0667,
+        0.2667,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.1333,
+        0.4,
+        0.1333,
+        0.1333,
+        0.1333,
+        0.0667
+      ],
+      [
+        0.0714,
+        0.1429,
+        0.4286,
+        0.0,
+        0.1429,
+        0.0714,
+        0.1429
+      ],
+      [
+        0.0714,
+        0.3571,
+        0.2143,
+        0.0714,
+        0.0,
+        0.2143,
+        0.0714
+      ],
+      [
+        0.0714,
+        0.1429,
+        0.2857,
+        0.0,
+        0.0,
+        0.1429,
+        0.3571
+      ],
+      [
+        0.1429,
+        0.2143,
+        0.1429,
+        0.0714,
+        0.1429,
+        0.2143,
+        0.0714
+      ],
+      [
+        0.0,
+        0.0714,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9286
+      ]
+    ]
+  }
+}

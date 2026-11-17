@@ -149,6 +149,18 @@ convolutional layer and is covered by the sanity check instead. Not a competing 
 | Three fills, all from fold-1 training clips only; scalar f = mean over bands of the per-band fill: **room noise -78.23 dB (main)**, **average -45.74 dB (second)**, **silence -100 dB (comparison)** | The plan's three fills. **Silence is the padding value -100 dB.** The fill-values decision above does not forbid it; it records that -100 dB is "perfect silence" never seen inside real speech, which is why room noise is the main fill. Silence is kept because the plan asks for it and because a deletion that looks like padding is exactly where a length/padding shortcut would show. | `fill_values_fold_1.json` |
 | Result (fold 1, test ex02): accuracy 31.4%, macro-F1 0.279 (ResNet seed 1: 68.6% / 0.670; length only 19.5%; chance 14.3%). Whisper is recognised (recall 0.94), the other styles are weak. | A weak but exact model is fine for a white-box check; its weights concentrate on the first 1 to 2 segments, so the truth rankings are dominated by s0. | `reports/lrfs_fold1/report.md` |
 
+## Explainers and the white-box check (fold 1), `src/explain/`
+
+| Decision | Why | Where |
+|---|---|---|
+| IG and LIME are written in plain torch / numpy, not with `captum` / `lime` | Neither package is installed, and new compiled packages have been blocked by Smart App Control before. Both are short. LIME follows the lime_image / lime_base defaults (first sample = original, uniform on/off, cosine distance, kernel width 0.25, weighted Ridge alpha 1). | `ig.py`, `lime_segments.py` |
+| One explainer code path for LRfS and the ResNet: model on the standardised [N, 1, 128, 400] input, target = the predicted class's logit, eval mode, float32, no autocast | The white-box check then tests the same code that later explains the ResNet. | `segments.py` |
+| IG: 50 steps, midpoint Riemann sum, baseline = the clip with every real segment replaced by the fill (padding unchanged), pixel attributions summed per segment | Same reference as the exact contributions, so IG's segment sums and the truth measure the same difference. | `ig.py` |
+| LIME: 500 samples; features = the clip's real segments only; "off" = the per-band fill written into all 25 frames | The plan ranks only segments with real audio; switching padding would change nothing for LRfS and only add a padding/length cue for the ResNet. | `lime_segments.py` |
+| 100 clips of the fold-1 test actor, stratified by true style (`train_test_split`, seed 42), chosen without any model's prediction; fixed in `reports/explain_fold1/clips_fold1.csv` and reused for the ResNet | Same clips for every explainer and model; choosing by correctness would make the set depend on the model. | `run_whitebox.py` |
+| Scores over real segments only: Kendall's tau-b on signed values (main) and on absolute values; top-3 overlap on signed values (segments that most support the prediction) and on absolute values; each fill scored against the truth for the same fill | The plan's metrics; signed values keep the direction of each segment's effect. | `run_whitebox.py` |
+| Reading the result: on a linear model IG is exact by construction and LIME's surrogate is the right model class, so near-perfect scores show the code is correct (segment mapping, fills, baseline, target), not that IG or LIME are faithful on the ResNet | Prevents over-reading the white-box result. | `reports/explain_fold1/whitebox_lrfs.md` |
+
 ## Reporting test results (standing rule, also in `CLAUDE.md`)
 
 | Decision | Why | Where |
